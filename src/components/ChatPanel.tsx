@@ -103,37 +103,37 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
   const starterCards = [
     {
-      icon: <GraduationCap size={20} color="#34d399" />,
+      icon: <GraduationCap size={22} color="#000000" strokeWidth={2.4} />,
       title: 'Odd Term SGPA & Grades',
       desc: 'Check your verified semester marks, credits earned, and grade sheet',
       prompt: 'Show my Odd Term 2023-24 results'
     },
     {
-      icon: <CheckCircle2 size={20} color="#10b981" />,
+      icon: <CheckCircle2 size={22} color="#000000" strokeWidth={2.4} />,
       title: 'Real-Time Attendance',
       desc: 'View current attendance percentage, classes held vs. attended',
       prompt: 'What is my current attendance percentage and today\'s schedule?'
     },
     {
-      icon: <FileText size={20} color="#f472b6" />,
+      icon: <FileText size={22} color="#000000" strokeWidth={2.4} />,
       title: '75% Attendance & Condonation',
       desc: 'Official medical exemptions, Dean discretionary limits & rules',
       prompt: 'What are the attendance condonation guidelines and medical limits?'
     },
     {
-      icon: <CreditCard size={20} color="#f59e0b" />,
+      icon: <CreditCard size={22} color="#000000" strokeWidth={2.4} />,
       title: 'Fee Status & Receipts',
       desc: 'Semester fee ledger, recent transaction receipts and pending dues',
       prompt: 'Check my fee status, receipts and pending dues'
     },
     {
-      icon: <Calendar size={20} color="#a78bfa" />,
+      icon: <Calendar size={22} color="#000000" strokeWidth={2.4} />,
       title: 'Academic Calendar & Holidays',
       desc: 'Upcoming semester milestones, mid-term dates, and Diwali/Winter break',
       prompt: 'When are the upcoming holidays and semester breaks?'
     },
     {
-      icon: <ShieldCheck size={20} color="#fb7185" />,
+      icon: <ShieldCheck size={22} color="#000000" strokeWidth={2.4} />,
       title: 'Pass Criteria & Moderation',
       desc: 'Section 6.1 minimum 35% end-sem & 40% aggregate passing rules',
       prompt: 'What is the minimum pass criteria for end sem?'

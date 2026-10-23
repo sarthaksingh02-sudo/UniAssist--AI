@@ -5,7 +5,7 @@ const STORAGE_KEY = 'uniassist_llm_settings';
 // OpenRouter uses OpenAI-compatible chat completions API
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 const OPENROUTER_SITE_URL = 'https://uniassist-ai.gdgu.edu.in'; // referrer for OpenRouter dashboard
-const OPENROUTER_APP_NAME = 'UniAssist AI – GD Goenka University';
+const OPENROUTER_APP_NAME = 'UniAssist AI - GD Goenka University';
 
 export class LLMService {
   private static settings: LLMSettings = LLMService.loadSettings();
@@ -22,7 +22,7 @@ export class LLMService {
     return {
       provider: 'openrouter',
       apiKey: '',
-      model: 'deepseek/deepseek-chat-v3-5:free',
+      model: 'deepseek/deepseek-chat',
       temperature: 0.3
     };
   }
@@ -62,24 +62,26 @@ export class LLMService {
   public static async testConnection(
     apiKey: string,
     provider: LLMProvider,
-    model = 'deepseek/deepseek-chat-v3-5:free'
+    model = 'deepseek/deepseek-chat'
   ): Promise<{ success: boolean; message: string }> {
     if (!apiKey || apiKey.trim().length < 5) {
       return { success: false, message: 'Please enter a valid API key string.' };
     }
 
     try {
+      const cleanKey = apiKey.trim().replace(/[^\x00-\x7F]/g, '');
+
       if (provider === 'openrouter') {
         const res = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey.trim()}`,
+            'Authorization': `Bearer ${cleanKey}`,
             'HTTP-Referer': OPENROUTER_SITE_URL,
-            'X-Title': OPENROUTER_APP_NAME
+            'X-Title': 'UniAssist AI - GD Goenka University'
           },
           body: JSON.stringify({
-            model,
+            model: model.trim(),
             messages: [{ role: 'user', content: 'Reply with the word CONNECTED only.' }],
             max_tokens: 10,
             temperature: 0.1
@@ -189,13 +191,14 @@ RULES:
 
       // ── OpenRouter (DeepSeek / any model) ──────────────────────────────────
       if (this.settings.provider === 'openrouter') {
+        const cleanKey = apiKey.replace(/[^\x00-\x7F]/g, '');
         const res = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`,
+            'Authorization': `Bearer ${cleanKey}`,
             'HTTP-Referer': OPENROUTER_SITE_URL,
-            'X-Title': OPENROUTER_APP_NAME
+            'X-Title': 'UniAssist AI - GD Goenka University'
           },
           body: JSON.stringify({
             model,
