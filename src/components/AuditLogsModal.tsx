@@ -1,0 +1,122 @@
+import React, { useState, useEffect } from 'react';
+import { X, ShieldCheck, Trash2 } from 'lucide-react';
+import { AuditLogger } from '../services/auditLogger';
+import { AuditLogEntry } from '../types';
+
+interface AuditLogsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const AuditLogsModal: React.FC<AuditLogsModalProps> = ({ isOpen, onClose }) => {
+  const [logs, setLogs] = useState<AuditLogEntry[]>([]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setLogs(AuditLogger.getLogs());
+    }
+    const unsubscribe = AuditLogger.subscribe(updated => setLogs(updated));
+    return () => unsubscribe();
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-box" style={{ maxWidth: '820px' }} onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <ShieldCheck size={20} color="#34d399" />
+            <h3 className="modal-title">Operational Diagnostics & Audit Log (FR-10)</h3>
+          </div>
+          <button className="close-btn" onClick={onClose}>
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="modal-body">
+          <div style={{
+            padding: '12px 16px',
+            borderRadius: '8px',
+            background: 'rgba(16, 185, 129, 0.08)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            marginBottom: '16px',
+            fontSize: '0.82rem',
+            color: '#6ee7b7'
+          }}>
+            <strong>Zero-PII Compliance Guarantee:</strong> Diagnostic logs record event metadata, route category, latency, and operational status codes only. In compliance with FR-10 and Section 7, logs strictly omit student grades, passwords, auth tokens, session cookies, and DOM dumps.
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
+              Recorded Events: <strong>{logs.length}</strong> (ephemeral in-memory ring buffer)
+            </span>
+            <button
+              className="btn btn-outline-danger"
+              style={{ fontSize: '0.74rem', padding: '4px 10px' }}
+              onClick={() => {
+                AuditLogger.clearLogs();
+                setLogs([]);
+              }}
+            >
+              <Trash2 size={13} />
+              <span>Clear Audit Stream</span>
+            </button>
+          </div>
+
+          {logs.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '30px', color: '#64748b' }}>
+              No operational events recorded yet. Send a query to generate diagnostic traces.
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '420px', overflowY: 'auto' }}>
+              {logs.map(entry => (
+                <div
+                  key={entry.id}
+                  style={{
+                    padding: '10px 14px',
+                    borderRadius: '6px',
+                    background: 'rgba(0, 0, 0, 0.3)',
+                    border: '1px solid var(--border-subtle)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.76rem'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ color: '#38bdf8', fontWeight: 600 }}>{entry.eventType}</span>
+                      <span style={{
+                        padding: '1px 6px',
+                        borderRadius: '4px',
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        color: '#cbd5e1'
+                      }}>
+                        {entry.route}
+                      </span>
+                      <span style={{ color: '#94a3b8' }}>[{entry.adapterVersion}]</span>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{
+                        color: entry.statusCode === 'SUCCESS' ? '#34d399' : '#f87171',
+                        fontWeight: 600
+                      }}>
+                        {entry.statusCode}
+                      </span>
+                      <span style={{ color: '#64748b' }}>{entry.latencyMs}ms</span>
+                      <span style={{ color: '#64748b' }}>{entry.timestamp}</span>
+                    </div>
+                  </div>
+
+                  <div style={{ color: '#94a3b8', fontSize: '0.74rem' }}>
+                    {entry.details}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};

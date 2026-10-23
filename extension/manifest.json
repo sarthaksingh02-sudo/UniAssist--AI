@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "UniAssist AI — GDGU DigiCampus Companion",
+  "version": "1.0.0",
+  "description": "Companion assistant for GD Goenka University DigiCampus navigation and university policy inquiries.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://gdgu.digiicampus.com/*",
+    "https://*.digiicampus.com/*",
+    "https://*.digicampus.com/*",
+    "https://digicampus.edu/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "UniAssist AI (GDGU DigiCampus)"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://gdgu.digiicampus.com/*",
+        "https://*.digiicampus.com/*",
+        "https://*.digicampus.com/*"
+      ],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
