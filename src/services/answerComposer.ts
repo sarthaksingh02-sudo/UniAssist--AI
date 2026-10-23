@@ -6,7 +6,7 @@ import { PortalConnector } from './portalConnector';
 import { LivePortalBridge } from './livePortalBridge';
 import { DynamicRAGEngine } from './dynamicRAGEngine';
 import { DIGICAMPUS_SITE_MAP } from '../data/digicampusSiteMap';
-import { ChatMessage, ExtractedPortalData, KnowledgeChunk, EnrolledCourseItem, FacultyClassItem, DeanApprovalItem } from '../types';
+import { ChatMessage, ExtractedPortalData, KnowledgeChunk, EnrolledCourseItem, FacultyClassItem, DeanApprovalItem, CourseAssessmentItem } from '../types';
 
 export class AnswerComposer {
   public static async processQuery(query: string): Promise<ChatMessage> {
@@ -262,6 +262,78 @@ export class AnswerComposer {
 
         suggestedActions.push({ label: 'Open Hostel Portal', action: 'VIEW_IN_PORTAL', payload: seg.directPortalUrl });
         AuditLogger.log('PORTAL_EXTRACTION', 'PORTAL_PERSONAL', 'hostel-v1', 'SUCCESS', performance.now() - startTime, 'Extracted hostel segment');
+      }
+
+      // 8. Continuous Classroom Assessments (Mid-Sem, MSE, Lab Tests, Quizzes)
+      else if (intent.targetSection === 'assessments') {
+        const liveAssessments = LivePortalBridge.getLiveAssessments();
+        const lowerQ = query.toLowerCase();
+
+        // Match specific course queried by user
+        let matchedAssessment: CourseAssessmentItem | undefined;
+        if (
+          lowerQ.includes('ml') ||
+          lowerQ.includes('application of ml') ||
+          lowerQ.includes('applications of ml') ||
+          lowerQ.includes('machine learning') ||
+          lowerQ.includes('4007')
+        ) {
+          if (lowerQ.includes('lab') || lowerQ.includes('4007l')) {
+            matchedAssessment = liveAssessments.find(a => a.courseCode === 'CSE4007L');
+          } else {
+            matchedAssessment = liveAssessments.find(a => a.courseCode === 'CSE4007');
+          }
+        } else if (lowerQ.includes('quantum') || lowerQ.includes('3728')) {
+          matchedAssessment = liveAssessments.find(a => a.courseCode === 'CSE3728');
+        } else if (lowerQ.includes('iot') || lowerQ.includes('internet of things') || lowerQ.includes('2501')) {
+          matchedAssessment = liveAssessments.find(a => a.courseCode === 'CSE2501');
+        } else if (lowerQ.includes('marketing') || lowerQ.includes('digital world') || lowerQ.includes('2761')) {
+          matchedAssessment = liveAssessments.find(a => a.courseCode === 'ITM2761');
+        } else if (lowerQ.includes('aptitude') || lowerQ.includes('3598')) {
+          matchedAssessment = liveAssessments.find(a => a.courseCode === 'TRA3598');
+        }
+
+        portalSource = {
+          section: 'Classroom Assessments (assessments-v1)',
+          period: 'Odd Sem 2026-27 (Active)',
+          retrievedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          rawLabel: 'Live Scraped Assessment Results — DigiCampus ERP',
+          data: matchedAssessment ? [matchedAssessment] : liveAssessments,
+          portalUrl: matchedAssessment?.classroomUrl || 'https://gdgu.digiicampus.com/classroom'
+        };
+
+        if (matchedAssessment) {
+          if (matchedAssessment.status === 'Published') {
+            answerText = `📊 **Assessment Score: ${matchedAssessment.courseTitle}** (\`${matchedAssessment.courseCode}\`)\n` +
+              `*(Live Scraped directly from GDGU DigiCampus Classroom #38606)*\n\n` +
+              `• **Assessment Name:** **\`${matchedAssessment.assessmentName}\`** (Mid-Semester Examination)\n` +
+              `• **Marks Obtained:** 🟢 **${matchedAssessment.marksObtained} / ${matchedAssessment.maxMarks}** (${matchedAssessment.percentage.toFixed(1)}%)\n` +
+              `• **Evaluation Status:** **${matchedAssessment.status}** on Faculty Gradebook\n` +
+              `• **Verified Route:** \`${matchedAssessment.classroomUrl.replace('https://gdgu.digiicampus.com', '')}\`\n\n` +
+              `*Note:* This continuous assessment is officially recorded on your active DigiCampus session.`;
+            suggestedActions.push({ label: 'View Assessment in DigiCampus', action: 'VIEW_IN_PORTAL', payload: matchedAssessment.classroomUrl });
+          } else {
+            answerText = `📋 **Assessment Status for ${matchedAssessment.courseTitle} (\`${matchedAssessment.courseCode}\`):**\n\n` +
+              `• **Status:** No assessment results published by faculty yet on the DigiCampus portal.\n` +
+              `• **Verified via:** Live inspection of active classroom ID \`${matchedAssessment.classroomId}\`.`;
+            suggestedActions.push({ label: 'Check Classroom in DigiCampus', action: 'VIEW_IN_PORTAL', payload: matchedAssessment.classroomUrl });
+          }
+        } else {
+          // Comprehensive listing of all 6 courses
+          answerText = `📊 **Continuous Assessments Status across Enrolled Courses**\n` +
+            `*(Live Scraped from active GDGU DigiCampus session)*\n\n` +
+            liveAssessments.map(a => {
+              if (a.status === 'Published') {
+                return `• **${a.courseTitle}** (\`${a.courseCode}\`):\n  Assessment: **\`${a.assessmentName}\`** (Mid-Sem) | Marks: 🟢 **${a.marksObtained} / ${a.maxMarks}** (${a.percentage.toFixed(1)}%) — *${a.status}*`;
+              } else {
+                return `• **${a.courseTitle}** (\`${a.courseCode}\`):\n  Status: *No assessment results published by faculty yet*`;
+              }
+            }).join('\n\n') +
+            `\n\n*All records verified directly from your open DigiCampus tab.*`;
+          suggestedActions.push({ label: 'Open Classrooms in DigiCampus', action: 'VIEW_IN_PORTAL', payload: 'https://gdgu.digiicampus.com/classroom' });
+        }
+
+        AuditLogger.log('PORTAL_EXTRACTION', 'PORTAL_PERSONAL', 'assessments-v1', 'SUCCESS', performance.now() - startTime, 'Extracted classroom assessments via live scrape');
       }
 
       // 4. Default: Student Marks & Results

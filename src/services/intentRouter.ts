@@ -91,13 +91,21 @@ export class IntentRouter {
       'pending approvals', 'dean approval queue', 'students requesting condonation'
     ];
 
-    // 4d. Student Marks Portal Queries
+    // 4d. Student Marks & Classroom Assessment Queries
     const marksKeywords = [
       'my mark', 'my marks', 'my grade', 'my grades', 'my score', 'my scores',
       'my result', 'my results', 'my sgpa', 'my cgpa', 'my gpa',
       'how did i do', 'what did i get', 'latest semester marks', 'semester 5 marks',
       'fall 2025 marks', 'spring 2025 marks', 'show my marks', 'check my marks',
       'display my results', 'did i pass my courses'
+    ];
+
+    const assessmentKeywords = [
+      'assessment', 'assesment', 'assessments', 'check assessment', 'check assesment',
+      'mse', 'mid term', 'mid sem', 'midterm', 'midsem', 'continuous evaluation',
+      'internal assessment', 'internal marks', 'quiz marks', 'assignment marks',
+      'how much did i get', 'how much marks', 'marks in application', 'marks in ml',
+      'marks in quantum', 'marks in iot'
     ];
 
     // 4e. Fee & Ledger Queries (Read-only status check)
@@ -131,10 +139,13 @@ export class IntentRouter {
     const isNoticesQuery = noticesKeywords.some(kw => q.includes(kw));
     const isCalendarQuery = calendarKeywords.some(kw => q.includes(kw));
     const isHostelQuery = hostelKeywords.some(kw => q.includes(kw));
+    const isAssessmentQuery = assessmentKeywords.some(kw => q.includes(kw)) ||
+      (/\b(how much|what|score|marks?)\b/.test(q) && /\b(get|got|score|scored|assessment|assesment|mse|midsem)\b/.test(q)) ||
+      (q.includes('application') && (q.includes('mark') || q.includes('score') || q.includes('get') || q.includes('assesment') || q.includes('assessment')));
     const isMarksQuery = marksKeywords.some(kw => q.includes(kw)) ||
       (/\b(my|i)\b/.test(q) && /\b(marks?|grades?|results?|sgpa|cgpa)\b/.test(q));
 
-    const hasPortalIntent = isAttendanceQuery || isCoursesQuery || isFacultyQuery || isDeanQuery || isMarksQuery || isFeesQuery || isNoticesQuery || isCalendarQuery || isHostelQuery;
+    const hasPortalIntent = isAttendanceQuery || isCoursesQuery || isFacultyQuery || isDeanQuery || isMarksQuery || isAssessmentQuery || isFeesQuery || isNoticesQuery || isCalendarQuery || isHostelQuery;
 
     // 5. Campus Knowledge Base Indicators
     const campusKbKeywords = [
@@ -149,18 +160,19 @@ export class IntentRouter {
     ];
 
     const hasCampusIntent = campusKbKeywords.some(keyword => q.includes(keyword)) ||
-      (/\b(rule|policy|criteria|deadline|due date|procedure|regulations?|guidelines?)\b/.test(q) && !isFeesQuery && !isNoticesQuery);
+      (/\b(rule|policy|criteria|deadline|due date|procedure|regulations?|guidelines?)\b/.test(q) && !isFeesQuery && !isNoticesQuery && !isAssessmentQuery);
 
     // 6. Mixed Request: Both personal portal retrieval AND campus KB
     if (hasPortalIntent && hasCampusIntent) {
       let targetSection: IntentClassification['targetSection'] = 'results';
-      if (isAttendanceQuery || isCoursesQuery) targetSection = 'courses';
-      if (isFacultyQuery) targetSection = 'faculty_classes';
-      if (isDeanQuery) targetSection = 'dean_approvals';
-      if (isFeesQuery) targetSection = 'fees';
-      if (isNoticesQuery) targetSection = 'notices';
-      if (isCalendarQuery) targetSection = 'calendar';
-      if (isHostelQuery) targetSection = 'hostel';
+      if (isAssessmentQuery) targetSection = 'assessments';
+      else if (isAttendanceQuery || isCoursesQuery) targetSection = 'courses';
+      else if (isFacultyQuery) targetSection = 'faculty_classes';
+      else if (isDeanQuery) targetSection = 'dean_approvals';
+      else if (isFeesQuery) targetSection = 'fees';
+      else if (isNoticesQuery) targetSection = 'notices';
+      else if (isCalendarQuery) targetSection = 'calendar';
+      else if (isHostelQuery) targetSection = 'hostel';
 
       return {
         category: 'MIXED',
@@ -179,7 +191,10 @@ export class IntentRouter {
       let targetSection: IntentClassification['targetSection'] = 'results';
       let reasoning = 'Personal student record query: Directed to the authenticated DigiCampus portal adapter.';
 
-      if (isAttendanceQuery) {
+      if (isAssessmentQuery) {
+        targetSection = 'assessments';
+        reasoning = 'Classroom continuous assessment inquiry: Routed to DigiCampus Classroom Assessment Results (#/classroom/student/assessmentResults).';
+      } else if (isAttendanceQuery) {
         targetSection = 'attendance';
         reasoning = 'Personal attendance inquiry: Routed to DigiCampus Course & Attendance adapter.';
       } else if (isCoursesQuery) {

@@ -59,7 +59,7 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
   portalState,
   onStateChange
 }) => {
-  const [studentTab, setStudentTab] = useState<'results' | 'attendance' | 'fees' | 'notices' | 'calendar' | 'courses'>('results');
+  const [studentTab, setStudentTab] = useState<'results' | 'attendance' | 'assessments' | 'fees' | 'notices' | 'calendar' | 'courses'>('results');
   
   // Plaid-Style Gateway State
   const [authMethod, setAuthMethod] = useState<AuthMethodTab>('TAB_SYNC');
@@ -690,6 +690,18 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
                     <span>Attendance</span>
                   </button>
                   <button
+                    className={`btn ${studentTab === 'assessments' ? 'btn-primary' : ''}`}
+                    style={{ fontSize: '0.74rem', padding: '5px 10px' }}
+                    onClick={() => {
+                      setStudentTab('assessments');
+                      PortalConnector.setSection('assessments');
+                      onStateChange();
+                    }}
+                  >
+                    <Award size={13} />
+                    <span>Assessments (MSE)</span>
+                  </button>
+                  <button
                     className={`btn ${studentTab === 'fees' ? 'btn-primary' : ''}`}
                     style={{ fontSize: '0.74rem', padding: '5px 10px' }}
                     onClick={() => {
@@ -860,6 +872,103 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
                         ))}
                       </tbody>
                     </table>
+                  </div>
+                )}
+
+                {/* Sub-view: Continuous Classroom Assessments (Live Scraped) */}
+                {studentTab === 'assessments' && (
+                  <div>
+                    <div style={{ padding: '10px 12px', background: 'rgba(59, 130, 246, 0.08)', borderRadius: '6px', border: '1px solid rgba(59, 130, 246, 0.25)', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#93c5fd' }}>
+                          🟢 Live Scraped Classroom Continuous Assessments (Term 2026-27)
+                        </span>
+                        <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>
+                          Synchronized from active session at <code>gdgu.digiicampus.com/classroom</code>
+                        </div>
+                      </div>
+                      <span style={{ fontSize: '0.68rem', padding: '2px 8px', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontWeight: 600 }}>
+                        Live Synchronized
+                      </span>
+                    </div>
+
+                    <div style={{ border: '1px solid var(--border-subtle)', borderRadius: '8px', overflow: 'hidden' }}>
+                      <table className="portal-table">
+                        <thead>
+                          <tr>
+                            <th>Course</th>
+                            <th>Assessment Name</th>
+                            <th>Score</th>
+                            <th>Percentage</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {LivePortalBridge.getLiveAssessments().map((a, i) => (
+                            <tr key={i} style={{ background: a.status === 'Published' ? 'rgba(16, 185, 129, 0.04)' : undefined }}>
+                              <td>
+                                <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#f8fafc' }}>
+                                  {a.courseCode}
+                                </div>
+                                <div style={{ fontSize: '0.74rem', color: '#94a3b8' }}>{a.courseTitle}</div>
+                              </td>
+                              <td style={{ fontWeight: 600, color: a.status === 'Published' ? '#60a5fa' : '#64748b' }}>
+                                <code>{a.assessmentName}</code>
+                              </td>
+                              <td>
+                                {a.status === 'Published' ? (
+                                  <span style={{ fontWeight: 800, color: '#34d399' }}>
+                                    {a.marksObtained} / {a.maxMarks}
+                                  </span>
+                                ) : (
+                                  <span style={{ color: '#64748b' }}>—</span>
+                                )}
+                              </td>
+                              <td>
+                                {a.status === 'Published' ? (
+                                  <span style={{ fontWeight: 700, color: '#34d399' }}>
+                                    {a.percentage.toFixed(1)}%
+                                  </span>
+                                ) : (
+                                  <span style={{ color: '#64748b' }}>—</span>
+                                )}
+                              </td>
+                              <td>
+                                <span style={{
+                                  fontSize: '0.7rem',
+                                  padding: '2px 6px',
+                                  borderRadius: '4px',
+                                  background: a.status === 'Published' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+                                  color: a.status === 'Published' ? '#34d399' : '#94a3b8',
+                                  fontWeight: 600
+                                }}>
+                                  {a.status === 'Published' ? 'Published' : 'Pending Evaluation'}
+                                </span>
+                              </td>
+                              <td>
+                                <a
+                                  href={a.classroomUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  style={{
+                                    fontSize: '0.7rem',
+                                    color: '#60a5fa',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '3px',
+                                    textDecoration: 'none'
+                                  }}
+                                >
+                                  <span>Classroom</span>
+                                  <ExternalLink size={10} />
+                                </a>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 

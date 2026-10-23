@@ -10,7 +10,19 @@ export interface IntentClassification {
     campusQuery?: string;
     portalQuery?: string;
   };
-  targetSection?: 'results' | 'courses' | 'attendance' | 'fees' | 'notices' | 'calendar' | 'hostel' | 'faculty_classes' | 'dean_approvals';
+  targetSection?: 'results' | 'courses' | 'attendance' | 'fees' | 'notices' | 'calendar' | 'hostel' | 'faculty_classes' | 'dean_approvals' | 'assessments';
+}
+
+export interface CourseAssessmentItem {
+  courseCode: string;
+  courseTitle: string;
+  classroomId: string;
+  assessmentName: string;
+  marksObtained: number;
+  maxMarks: number;
+  percentage: number;
+  status: 'Published' | 'Evaluated' | 'Pending';
+  classroomUrl: string;
 }
 
 export interface PolicyDocument {
@@ -128,7 +140,7 @@ export type PortalAuthStatus =
 export interface DigiCampusState {
   authStatus: PortalAuthStatus;
   userRole: UserRole;
-  currentSection: 'dashboard' | 'results' | 'courses' | 'attendance' | 'fees' | 'notices' | 'calendar' | 'hostel' | 'faculty_classes' | 'dean_approvals' | 'unsupported_page';
+  currentSection: 'dashboard' | 'results' | 'courses' | 'attendance' | 'fees' | 'notices' | 'calendar' | 'hostel' | 'faculty_classes' | 'dean_approvals' | 'assessments' | 'unsupported_page';
   selectedPeriod: string;
   activeAccountMasked?: string;
   lastActiveTimestamp: number;
