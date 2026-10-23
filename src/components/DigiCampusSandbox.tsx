@@ -1007,12 +1007,12 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
                       <div style={{ padding: '10px', background: 'rgba(59, 130, 246, 0.08)', borderRadius: '6px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
-                        <div style={{ fontSize: '0.68rem', color: '#93c5fd' }}>TOTAL TUITION</div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>₹1,65,000</div>
+                        <div style={{ fontSize: '0.68rem', color: '#93c5fd' }}>TOTAL SPENT (GDGU)</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>₹14,68,850</div>
                       </div>
                       <div style={{ padding: '10px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                        <div style={{ fontSize: '0.68rem', color: '#6ee7b7' }}>AMOUNT PAID</div>
-                        <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>₹1,65,000</div>
+                        <div style={{ fontSize: '0.68rem', color: '#6ee7b7' }}>TERM 7 FEE PAID</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>₹1,52,000</div>
                       </div>
                       <div style={{ padding: '10px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
                         <div style={{ fontSize: '0.68rem', color: '#6ee7b7' }}>PENDING DUES</div>
@@ -1023,16 +1023,42 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
                     <div style={{ padding: '14px', background: 'rgba(17, 24, 39, 0.6)', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                         <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f8fafc' }}>
-                          Verified Fee Receipt — Term 2026-27
+                          Verified Fee Receipts & Online Transactions
                         </span>
                         <span style={{ fontSize: '0.7rem', padding: '2px 8px', borderRadius: '999px', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
-                          Payment Verified
+                          100% Cleared
                         </span>
                       </div>
-                      <div style={{ fontSize: '0.74rem', color: '#94a3b8', lineHeight: 1.6 }}>
-                        • Receipt Number: <code style={{ color: '#60a5fa' }}>GDGU-REC-2026-88912</code><br />
-                        • Transaction Date: July 15, 2026 • Mode: HDFC NetBanking<br />
-                        • Amount Cleared: ₹1,65,000.00 (Zero outstanding balance)
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.74rem' }}>
+                        <div style={{ padding: '8px', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ fontWeight: 600, color: '#f8fafc' }}>Fees Collection — Term 7</span>
+                            <span style={{ color: '#34d399', fontWeight: 700 }}>₹53,000.00</span>
+                          </div>
+                          <div style={{ color: '#94a3b8', fontSize: '0.7rem' }}>
+                            09 Jul 2026, 04:12 pm • Razorpay (<code style={{ color: '#60a5fa' }}>order_TBLInozzBpWQ04</code>)
+                          </div>
+                        </div>
+
+                        <div style={{ padding: '8px', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ fontWeight: 600, color: '#f8fafc' }}>Fees Collection — Term 7</span>
+                            <span style={{ color: '#34d399', fontWeight: 700 }}>₹99,000.00</span>
+                          </div>
+                          <div style={{ color: '#94a3b8', fontSize: '0.7rem' }}>
+                            08 Jul 2026, 01:28 pm • Razorpay (<code style={{ color: '#60a5fa' }}>order_TB1bmuI3tH431a</code>)
+                          </div>
+                        </div>
+
+                        <div style={{ padding: '8px', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ fontWeight: 600, color: '#f8fafc' }}>Dues Management — Term 6</span>
+                            <span style={{ color: '#34d399', fontWeight: 700 }}>₹43,350.00</span>
+                          </div>
+                          <div style={{ color: '#94a3b8', fontSize: '0.7rem' }}>
+                            09 Dec 2025, 03:22 pm • NetBanking
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

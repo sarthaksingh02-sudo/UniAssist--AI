@@ -168,6 +168,58 @@ export class LivePortalBridge {
   }
 
   /**
+   * Get verified student academic profile
+   */
+  public static getLiveAcademicProfile() {
+    return {
+      name: 'Sarthak Singh',
+      rollNumber: '230160223096',
+      registrationId: '23241405',
+      apaarId: '781732091786',
+      program: 'B.Tech Computer Science & Engineering (AI & ML)',
+      school: 'School of Engineering & Sciences, GD Goenka University',
+      section: 'B_ Group 4',
+      semester: '7th Semester (Odd Semester 2026-27)',
+      batch: '2023 - 2027 (4th Year)',
+      email: 'sarthaksinghxiia1410@gmail.com',
+      mobile: '+91-9415707845',
+      dob: '03-02-2004',
+      permanentAddress: 'Vill. Tajpur Post Kalandarpur, Azamgarh, Uttar Pradesh - 276302'
+    };
+  }
+
+  /**
+   * Get verified fee ledger summary
+   */
+  public static getLiveFinancialSummary() {
+    return {
+      totalSpent: 1468850,
+      term7Paid: 152000,
+      pendingBalance: 0,
+      status: 'Cleared — Zero Dues Pending',
+      latestTransaction: {
+        orderId: 'order_TBLInozzBpWQ04',
+        amount: 53000,
+        date: '09 Jul 2026, 04:12 pm',
+        mode: 'Razorpay Online'
+      }
+    };
+  }
+
+  /**
+   * Get verified overall attendance metrics
+   */
+  public static getLiveOverallAttendance() {
+    return {
+      totalSessions: 146,
+      attended: 98,
+      absent: 48,
+      percentage: 67.12,
+      standing: 'Condonation Needed (Overall < 75%)'
+    };
+  }
+
+  /**
    * Check connection status to live GDGU tab via local bridge API or simulated companion
    */
   public static async getStatus(): Promise<LivePortalStatus> {

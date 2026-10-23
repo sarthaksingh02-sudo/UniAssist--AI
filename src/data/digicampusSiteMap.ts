@@ -79,16 +79,17 @@ export const DIGICAMPUS_SITE_MAP: Record<PortalSegmentId, PortalSegmentDefinitio
       'penalty', 'paid fee', 'installments', 'financial ledger', 'challan'
     ],
     mockSnapshot: {
-      academicYear: '2026-2027 (Semester 7)',
-      totalSemesterFee: 165000,
-      amountPaid: 165000,
+      academicYear: '2026-2027 (Semester 7 | 4th Year)',
+      totalSemesterFee: 152000,
+      totalCumulativeSpent: 1468850,
+      amountPaid: 152000,
       pendingBalance: 0,
       paymentStatus: 'Cleared — Zero Dues Pending',
       latestReceipt: {
-        receiptNumber: 'GDGU-REC-2026-88912',
-        date: 'July 15, 2026',
-        amount: 165000,
-        mode: 'Online HDFC NetBanking',
+        receiptNumber: 'order_TBLInozzBpWQ04',
+        date: '09 Jul 2026, 04:12 pm',
+        amount: 53000,
+        mode: 'Online (Razorpay)',
         status: 'Success'
       },
       nextTermPaymentWindow: 'Opens December 10, 2026'

@@ -10,11 +10,11 @@ import {
 export const MOCK_USER_PROFILES: Record<UserRole, PortalUserProfile> = {
   student: {
     role: 'student',
-    identifierMasked: '230160223096 (ID: 23241405)',
+    identifierMasked: '230160223096 (App ID: 23241405 | APAAR: 781732091786)',
     nameMasked: 'Sarthak Singh',
-    departmentOrProgram: 'B.Tech CSE (AI & ML) — School of Engineering and Sciences, GDGU',
-    currentSemesterOrTitle: 'Semester 7 (Odd Sem 2026-27)',
-    enrollmentOrStatus: 'Enrolled — Active GDGU Student'
+    departmentOrProgram: 'B.Tech CSE (AI & ML) — School of Engineering & Sciences, GDGU (Section B_ Group 4)',
+    currentSemesterOrTitle: 'Semester 7 (Odd Sem 2026-27 | 4th Year)',
+    enrollmentOrStatus: 'Enrolled — Regular Student (General Quota)'
   },
   faculty: {
     role: 'faculty',
