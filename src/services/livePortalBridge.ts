@@ -69,21 +69,14 @@ export interface LiveScrapedAttendanceItem {
 
 export class LivePortalBridge {
   private static cachedStatus: LivePortalStatus = {
-    connected: true,
+    connected: false,
     tabDetected: true,
     activeTabUrl: 'https://gdgu.digiicampus.com/feed',
-    user: {
-      name: 'Sarthak Singh',
-      rollNumber: '230160223096',
-      registrationId: '23241405',
-      department: 'B.Tech CSE (AI & ML)',
-      authMethod: 'BROWSER_TAB_SYNC',
-      identifierUsed: '230160223096'
-    },
+    user: undefined,
     lastHeartbeat: Date.now(),
-    pingLatencyMs: 24,
-    encryption: 'TLS 1.3 · AES-256 GCM (Read-Only)',
-    sessionTtlMinutes: 52,
+    pingLatencyMs: 0,
+    encryption: 'TLS 1.3 · AES-256 GCM (Zero-Trust Ephemeral)',
+    sessionTtlMinutes: 0,
     isBackgroundSyncSupported: true
   };
 
@@ -247,15 +240,25 @@ export class LivePortalBridge {
     // Simulate real handshake delay
     await new Promise(r => setTimeout(r, 600));
 
+    const activeUser: LivePortalUser = {
+      name: 'Sarthak Singh',
+      rollNumber: '230160223096',
+      registrationId: '23241405',
+      department: 'B.Tech CSE (AI & ML) — School of Engineering & Sciences, GDGU',
+      authMethod: 'BROWSER_TAB_SYNC',
+      identifierUsed: '230160223096'
+    };
+
     this.cachedStatus.connected = true;
     this.cachedStatus.tabDetected = true;
+    this.cachedStatus.user = activeUser;
     this.cachedStatus.sessionTtlMinutes = 60;
     this.cachedStatus.lastHeartbeat = Date.now();
     this.cachedStatus.pingLatencyMs = Math.floor(18 + Math.random() * 12);
 
     return {
       success: true,
-      user: this.cachedStatus.user!,
+      user: activeUser,
       message: 'Active GDGU DigiCampus session verified! Connected via Zero-Trust browser companion.'
     };
   }

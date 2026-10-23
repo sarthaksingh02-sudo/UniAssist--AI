@@ -3,11 +3,11 @@ import { MOCK_USER_PROFILES } from '../data/mockPortalData';
 
 export class PortalConnector {
   private static currentState: DigiCampusState = {
-    authStatus: 'CONNECTED_AUTHENTICATED',
+    authStatus: 'DISCONNECTED',
     userRole: 'student',
-    currentSection: 'results',
-    selectedPeriod: 'Fall 2025',
-    activeAccountMasked: MOCK_USER_PROFILES.student.identifierMasked,
+    currentSection: 'dashboard',
+    selectedPeriod: 'End Term Examination Odd Sem 2026-27',
+    activeAccountMasked: undefined,
     lastActiveTimestamp: Date.now(),
     layoutVersion: 'results-v1'
   };

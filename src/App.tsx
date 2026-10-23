@@ -281,9 +281,7 @@ export function App() {
 
   const handleActionClick = (action: string, payload?: any) => {
     if (action === 'OPEN_PORTAL_LOGIN' || action === 'RE_LOGIN') {
-      PortalConnector.setAuthStatus('CONNECTED_AUTHENTICATED');
-      setPortalState(PortalConnector.getState());
-      setIsSplitView(true); // Open portal view to verify
+      setIsSplitView(true); // Open the portal panel so user can perform 1-Click Sync or login
     } else if (action === 'VIEW_IN_PORTAL') {
       setIsSplitView(true);
       if (portalState.userRole === 'faculty') {

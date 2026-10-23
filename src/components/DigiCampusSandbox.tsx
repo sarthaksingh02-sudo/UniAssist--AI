@@ -128,7 +128,12 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
     setIsAuthenticating(true);
     setLoginMessage(`Authenticating ${authMethod.replace('_', ' ')} with GDGU Identity Gateway...`);
 
-    setTimeout(() => {
+    setTimeout(async () => {
+      await LivePortalBridge.authenticateWithIdentifier(
+        identifierInput.trim(),
+        authMethod === 'ROLL_NO' ? 'REGISTRATION_NO' : authMethod === 'MOBILE' ? 'MOBILE_OTP' : authMethod === 'EMAIL' ? 'PERSONAL_EMAIL' : 'OFFICIAL_SSO',
+        loginFullName.trim() || undefined
+      );
       PortalConnector.loginWithCredentials(
         identifierInput.trim(),
         loginRole,
