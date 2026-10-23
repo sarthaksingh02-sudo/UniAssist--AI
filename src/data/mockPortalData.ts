@@ -196,150 +196,151 @@ export const MOCK_DEAN_APPROVALS: DeanApprovalItem[] = [
   }
 ];
 
-// Complete Real Academic History for Sarthak Singh (GD Goenka University - DigiCampus)
+// Complete 100% Real Academic History for Sarthak Singh (Scraped directly from GDGU DigiCampus: https://gdgu.digiicampus.com/V2/#/examinationManagement/studentExamRecords/674656)
 export const MOCK_SEMESTER_RESULTS: Record<string, SemesterResult> = {
-  // Term 1: Odd Term 2023-24 (SGPA: 8.91)
+  // Term 1: Odd Term Examination 2023-24 (SGPA: 9.68)
   'Odd Term Examination 2023-24': {
     period: 'Odd Term Examination 2023-24 (Semester 1)',
     academicYear: '2023-2024',
     program: 'B.Tech Computer Science & Engineering (AI & ML) — GDGU',
-    sgpa: 8.91,
-    cgpa: 8.91,
-    totalCreditsEarned: 22,
-    publishedDate: '13 Jan 2024, 02:12 pm',
-    remarks: 'Result Status: Officially Declared & Published on GDGU DigiCampus',
+    sgpa: 9.68,
+    cgpa: 9.68,
+    totalCreditsEarned: 20,
+    publishedDate: '15 Jan 2024, 05:39 pm',
+    remarks: 'Officially Declared & Published on GDGU DigiCampus',
     courses: [
-      { courseCode: 'COM1006', courseTitle: 'Communication Skills', credits: 2, internalMarks: 34, maxInternal: 40, endTermMarks: 48, maxEndTerm: 60, totalMarks: 82, grade: 'B+ (GP: 8)', status: 'Pass' },
-      { courseCode: 'COM1006L', courseTitle: 'Communication Skills Lab', credits: 1, internalMarks: 48, maxInternal: 50, endTermMarks: 47, maxEndTerm: 50, totalMarks: 95, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSI1201', courseTitle: 'Critical Thinking and Problem Solving', credits: 3, internalMarks: 36, maxInternal: 40, endTermMarks: 52, maxEndTerm: 60, totalMarks: 88, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'MAT1707', courseTitle: 'Calculus and Differential Equations', credits: 4, internalMarks: 37, maxInternal: 40, endTermMarks: 51, maxEndTerm: 60, totalMarks: 88, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'VAC002', courseTitle: 'Creative & Performing Arts', credits: 2, internalMarks: 46, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 94, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE1401', courseTitle: 'C and Data Structures', credits: 4, internalMarks: 39, maxInternal: 40, endTermMarks: 56, maxEndTerm: 60, totalMarks: 95, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE1402', courseTitle: 'Python Programming', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 90, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'CSE1402L', courseTitle: 'Python Programming Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE1401L', courseTitle: 'C and Data Structures Lab', credits: 2, internalMarks: 45, maxInternal: 50, endTermMarks: 46, maxEndTerm: 50, totalMarks: 91, grade: 'A (GP: 9)', status: 'Pass' }
+      { courseCode: 'COM2520', courseTitle: 'Communication Skills', credits: 2, internalMarks: 36, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'ENG1001', courseTitle: 'Engineering Physics', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'ENG1001L', courseTitle: 'Engineering Physics Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'MAT1722', courseTitle: 'Linear Algebra and Calculus', credits: 3, internalMarks: 40, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'MAT1722L', courseTitle: 'Linear Algebra and Calculus Lab', credits: 1, internalMarks: 50, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 99, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CHE1001', courseTitle: 'Engineering Chemistry', credits: 3, internalMarks: 38, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 95, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CHE1001L', courseTitle: 'Engineering Chemistry Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE1001', courseTitle: 'Problem Solving and Programming using C', credits: 3, internalMarks: 40, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE1001L', courseTitle: 'Problem Solving and Programming using C Lab', credits: 1, internalMarks: 50, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 99, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'IDP2500', courseTitle: 'Interdisciplinary Project', credits: 2, internalMarks: 48, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' }
     ]
   },
 
-  // Term 2: End Term Even 2023-24 (SGPA: 8.68)
+  // Term 2: End Term Examination Even 2023-24 (SGPA: 9.83)
   'End Term Examination Even 2023-24': {
     period: 'End Term Examination Even 2023-24 (Semester 2)',
     academicYear: '2023-2024',
     program: 'B.Tech Computer Science & Engineering (AI & ML) — GDGU',
-    sgpa: 8.68,
-    cgpa: 8.80,
+    sgpa: 9.83,
+    cgpa: 9.76,
     totalCreditsEarned: 19,
-    publishedDate: '14 Jun 2024, 02:37 pm',
-    remarks: 'Result Status: Officially Declared & Published on GDGU DigiCampus',
+    publishedDate: '12 Jun 2024, 11:39 am',
+    remarks: 'Officially Declared & Published on GDGU DigiCampus',
     courses: [
-      { courseCode: 'CSE2004', courseTitle: 'Introduction to Computer Engineering', credits: 2, internalMarks: 36, maxInternal: 40, endTermMarks: 52, maxEndTerm: 60, totalMarks: 88, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'VAC001', courseTitle: 'Sports & Yoga', credits: 2, internalMarks: 48, maxInternal: 50, endTermMarks: 47, maxEndTerm: 50, totalMarks: 95, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'MAT1708', courseTitle: 'Discrete Mathematics', credits: 4, internalMarks: 32, maxInternal: 40, endTermMarks: 48, maxEndTerm: 60, totalMarks: 80, grade: 'B+ (GP: 8)', status: 'Pass' },
-      { courseCode: 'CSE1403', courseTitle: 'Object Oriented Programming with Java', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 52, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'CSE1403L', courseTitle: 'Object Oriented Programming with Java Lab', credits: 1, internalMarks: 47, maxInternal: 50, endTermMarks: 47, maxEndTerm: 50, totalMarks: 94, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE1102', courseTitle: 'Digital Logic and Computer Organization', credits: 3, internalMarks: 33, maxInternal: 40, endTermMarks: 49, maxEndTerm: 60, totalMarks: 82, grade: 'B+ (GP: 8)', status: 'Pass' },
-      { courseCode: 'CSE1102L', courseTitle: 'Digital Logic & Computer Org Lab', credits: 1, internalMarks: 45, maxInternal: 50, endTermMarks: 46, maxEndTerm: 50, totalMarks: 91, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'ENV1704', courseTitle: 'Environmental Science', credits: 3, internalMarks: 36, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' }
+      { courseCode: 'CHE1002', courseTitle: 'Environmental Sciences', credits: 2, internalMarks: 39, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CHE1002L', courseTitle: 'Environmental Sciences Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'ENG1002', courseTitle: 'Engineering Graphics and Design', credits: 2, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'IDP2501', courseTitle: 'Interdisciplinary Project I', credits: 3, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'EVS1001', courseTitle: 'Universal Human Values', credits: 0, internalMarks: 48, maxInternal: 50, endTermMarks: 47, maxEndTerm: 50, totalMarks: 95, grade: 'S (GP: 0)', status: 'Pass' },
+      { courseCode: 'MAT1712', courseTitle: 'Ordinary Differential Equations and Complex Variables', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'MAT1712L', courseTitle: 'Ordinary Differential Equations and Complex Variables Lab', credits: 1, internalMarks: 50, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 99, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE1002', courseTitle: 'Data Structures and Algorithms', credits: 3, internalMarks: 40, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE1002L', courseTitle: 'Data Structures and Algorithms Lab', credits: 1, internalMarks: 50, maxInternal: 50, endTermMarks: 50, maxEndTerm: 50, totalMarks: 100, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'MGT1001', courseTitle: 'Principles of Management', credits: 3, internalMarks: 36, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' }
     ]
   },
 
-  // Term 3: End Term Odd 2024-25 (SGPA: 9.68)
+  // Term 3: End Term Examination Odd 2024-25 (SGPA: 9.68)
   'End Term Examination Odd 2024-25': {
     period: 'End Term Examination Odd 2024-25 (Semester 3)',
     academicYear: '2024-2025',
     program: 'B.Tech Computer Science & Engineering (AI & ML) — GDGU',
     sgpa: 9.68,
-    cgpa: 9.12,
-    totalCreditsEarned: 23,
-    publishedDate: '04 Jan 2025, 03:00 pm',
-    remarks: 'Result Status: Officially Declared & Published on GDGU DigiCampus',
+    cgpa: 9.73,
+    totalCreditsEarned: 22,
+    publishedDate: '04 Jan 2025, 05:24 pm',
+    remarks: 'Officially Declared & Published on GDGU DigiCampus',
     courses: [
-      { courseCode: 'COM2521', courseTitle: 'Campus to Corporate: Verbal Ability', credits: 1, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'IDP2501', courseTitle: 'Introduction to Internet of Things', credits: 2, internalMarks: 46, maxInternal: 50, endTermMarks: 47, maxEndTerm: 50, totalMarks: 93, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'IDP2502', courseTitle: 'Introduction to Internet of Things Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'MAT1723', courseTitle: 'Linear Algebra, Probability & Optimization', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'MAT1723L', courseTitle: 'Linear Algebra & Optimization Lab', credits: 1, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'ELX2705', courseTitle: 'Sensors, Actuators & Signal Processing', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 90, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'CSE2034', courseTitle: 'Data Structures and Algorithms', credits: 3, internalMarks: 40, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE2034L', courseTitle: 'Data Structures and Algorithms Lab', credits: 1, internalMarks: 50, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 99, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'UHV2701', courseTitle: 'Universal Human Values', credits: 3, internalMarks: 38, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 95, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE2035', courseTitle: 'Database Management Systems', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE2035L', courseTitle: 'Database Management Systems Lab', credits: 2, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' }
+      { courseCode: 'COM2521', courseTitle: 'Academic Writing', credits: 2, internalMarks: 33, maxInternal: 40, endTermMarks: 49, maxEndTerm: 60, totalMarks: 82, grade: 'B+ (GP: 8)', status: 'Pass' },
+      { courseCode: 'IDP2501', courseTitle: 'Interdisciplinary Project I', credits: 3, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'MAT1723', courseTitle: 'Discrete Mathematics Using Python', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'MAT1723L', courseTitle: 'Discrete Mathematics using Python Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'ELX2705', courseTitle: 'Digital Logic Design', credits: 2, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE2034', courseTitle: 'Introduction to Design and Analysis of Algorithms', credits: 3, internalMarks: 40, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE2034L', courseTitle: 'Introduction to Design and Analysis of Algorithms Lab', credits: 1, internalMarks: 50, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 99, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'UHV2701', courseTitle: 'Universal Human Values II', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE2035', courseTitle: 'Object Oriented Programming Through C++', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 90, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'CSE2035L', courseTitle: 'Object Oriented Programming Through C++ Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' }
     ]
   },
 
-  // Term 4: End Term Even 2024-25 (SGPA: 9.67) - Also aliased as Spring 2025
+  // Term 4: End Term Examination Even 2024-25 (SGPA: 9.67)
   'End Term Examination Even 2024-25': {
     period: 'End Term Examination Even 2024-25 (Semester 4)',
     academicYear: '2024-2025',
     program: 'B.Tech Computer Science & Engineering (AI & ML) — GDGU',
     sgpa: 9.67,
-    cgpa: 9.29,
-    totalCreditsEarned: 27,
-    publishedDate: '18 Jun 2025, 11:42 am',
-    remarks: 'Result Status: Officially Declared & Published on GDGU DigiCampus',
+    cgpa: 9.71,
+    totalCreditsEarned: 26,
+    publishedDate: '18 Jun 2025, 09:43 am',
+    remarks: 'Officially Declared & Published on GDGU DigiCampus',
     courses: [
-      { courseCode: 'ELE1001', courseTitle: 'Design Thinking', credits: 2, internalMarks: 47, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 95, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'ELE1001L', courseTitle: 'Design Thinking Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'COM2525', courseTitle: 'Campus to Corporate: Quantitative Ability', credits: 1, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'IDP2503', courseTitle: 'Robotics Essentials', credits: 2, internalMarks: 46, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 94, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'IDP2504', courseTitle: 'Robotics Essentials Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'EGV1001', courseTitle: 'Engineering Exploration & Innovation', credits: 2, internalMarks: 48, maxInternal: 50, endTermMarks: 47, maxEndTerm: 50, totalMarks: 95, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'PHY1007', courseTitle: 'Semiconductor Physics', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 90, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'PHY1007L', courseTitle: 'Semiconductor Physics Lab', credits: 1, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE2037', courseTitle: 'Operating Systems', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE2037L', courseTitle: 'Operating Systems Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE2039', courseTitle: 'Artificial Intelligence', credits: 3, internalMarks: 40, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE2039L', courseTitle: 'Artificial Intelligence Lab', credits: 1, internalMarks: 50, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 99, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE2040', courseTitle: 'Machine Learning', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE2040L', courseTitle: 'Machine Learning Lab', credits: 2, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'LAW3710', courseTitle: 'Cyber Law and Ethics', credits: 1, internalMarks: 47, maxInternal: 50, endTermMarks: 47, maxEndTerm: 50, totalMarks: 94, grade: 'A+ (GP: 10)', status: 'Pass' }
+      { courseCode: 'ELE1001', courseTitle: 'Fundamentals of Electrical and Electronics Engineering', credits: 3, internalMarks: 36, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'ELE1001L', courseTitle: 'Fundamentals of Electrical and Electronics Engineering Lab', credits: 1, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'COM2525', courseTitle: 'Workplace Communication', credits: 2, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'IDP2503', courseTitle: 'Interdisciplinary Project II', credits: 3, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'EGV1001', courseTitle: 'Engineering Visualization and Project Realization', credits: 2, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'PHY1007', courseTitle: 'Foundation of Modern physics', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'PHY1007L', courseTitle: 'Foundation of Modern physics Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE2037', courseTitle: 'Basics of Data Communication and Computer Networks', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 90, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'CSE2037L', courseTitle: 'Basics of Data Communication and Computer Networks LAB', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE2039', courseTitle: 'Introduction to AI and its Applications', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 90, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'CSE2039L', courseTitle: 'Introduction to AI and its Applications Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE2040', courseTitle: 'Machine Learning and its Applications', credits: 3, internalMarks: 40, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE2040L', courseTitle: 'Machine Learning and its Applications LAB', credits: 1, internalMarks: 50, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 99, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'LAW3710', courseTitle: 'Constitution of India', credits: 0, internalMarks: 48, maxInternal: 50, endTermMarks: 47, maxEndTerm: 50, totalMarks: 95, grade: 'S (GP: 0)', status: 'Pass' }
     ]
   },
 
-  // Term 5: End Term Odd Sem 2025-26 (SGPA: 9.27) - Also aliased as Fall 2025
+  // Term 5: End Term Examination Odd Sem 2025-26 (SGPA: 9.27)
   'End Term Examination Odd Sem 2025-26': {
     period: 'End Term Examination Odd Sem 2025-26 (Semester 5)',
     academicYear: '2025-2026',
     program: 'B.Tech Computer Science & Engineering (AI & ML) — GDGU',
     sgpa: 9.27,
-    cgpa: 9.28,
-    totalCreditsEarned: 23,
-    publishedDate: '02 Jun 2026, 02:40 pm',
-    remarks: 'Result Status: Officially Declared & Published on GDGU DigiCampus',
+    cgpa: 9.62,
+    totalCreditsEarned: 22,
+    publishedDate: '02 Jun 2026, 11:52 am',
+    remarks: 'Officially Declared & Published on GDGU DigiCampus',
     courses: [
-      { courseCode: 'ELX3008', courseTitle: 'VLSI Design Basics', credits: 2, internalMarks: 36, maxInternal: 40, endTermMarks: 52, maxEndTerm: 60, totalMarks: 88, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'ELX3008L', courseTitle: 'VLSI Design Basics Lab', credits: 1, internalMarks: 45, maxInternal: 50, endTermMarks: 46, maxEndTerm: 50, totalMarks: 91, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'HUM2790', courseTitle: 'Technical Writing and Research Methodology', credits: 2, internalMarks: 47, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 95, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE3714', courseTitle: 'Computer Networks', credits: 3, internalMarks: 38, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 95, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE3022', courseTitle: 'Natural Language Processing', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 90, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'CSE3022L', courseTitle: 'Natural Language Processing Lab', credits: 1, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE3009', courseTitle: 'Deep Learning', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE3009L', courseTitle: 'Deep Learning Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE3710', courseTitle: 'Software Engineering & Agile Methodologies', credits: 3, internalMarks: 36, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'CSE3014', courseTitle: 'Computer Vision', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE3014L', courseTitle: 'Computer Vision Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' }
+      { courseCode: 'ELX3008', courseTitle: 'Microprocessor and Microcontrollers', credits: 3, internalMarks: 33, maxInternal: 40, endTermMarks: 49, maxEndTerm: 60, totalMarks: 82, grade: 'B+ (GP: 8)', status: 'Pass' },
+      { courseCode: 'ELX3008L', courseTitle: 'Microprocessor and Microcontrollers Lab', credits: 1, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'HUM2790', courseTitle: 'Essence of Indian Traditional Knowledge', credits: 0, internalMarks: 47, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 95, grade: 'S (GP: 0)', status: 'Pass' },
+      { courseCode: 'CSE3714', courseTitle: 'Generative AI', credits: 3, internalMarks: 36, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'CSE3022', courseTitle: 'DBMS with NoSQL', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 90, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'CSE3022L', courseTitle: 'DBMS with NoSQL Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE3009', courseTitle: 'Operating Systems and its applications', credits: 2, internalMarks: 33, maxInternal: 40, endTermMarks: 49, maxEndTerm: 60, totalMarks: 82, grade: 'B+ (GP: 8)', status: 'Pass' },
+      { courseCode: 'CSE3009L', courseTitle: 'Operating Systems and its applications Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE3710', courseTitle: 'Natural Language Processing', credits: 4, internalMarks: 40, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE3014', courseTitle: 'Neural Networks and Deep Learning', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE3014L', courseTitle: 'Neural Networks and Deep Learning Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' }
     ]
   },
 
-  // Term 6: End Term Even Sem 2025-26 (SGPA: 9.18)
+  // Term 6: End Term Examination Even Sem 2025-26 (SGPA: 9.18)
   'End Term Examination Even Sem 2025-26': {
     period: 'End Term Examination Even Sem 2025-26 (Semester 6)',
     academicYear: '2025-2026',
     program: 'B.Tech Computer Science & Engineering (AI & ML) — GDGU',
     sgpa: 9.18,
-    cgpa: 9.26,
-    totalCreditsEarned: 20,
-    publishedDate: '23 Jun 2026, 04:15 pm',
-    remarks: 'Result Status: Officially Declared & Published on GDGU DigiCampus',
+    cgpa: 9.55,
+    totalCreditsEarned: 17,
+    publishedDate: '23 Jun 2026, 12:26 pm',
+    remarks: 'Officially Declared & Published on GDGU DigiCampus',
     courses: [
-      { courseCode: 'ENP2763', courseTitle: 'Entrepreneurship Development', credits: 2, internalMarks: 37, maxInternal: 40, endTermMarks: 52, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'CSE3013', courseTitle: 'Cloud Computing and DevOps', credits: 3, internalMarks: 39, maxInternal: 40, endTermMarks: 57, maxEndTerm: 60, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE3013L', courseTitle: 'Cloud Computing and DevOps Lab', credits: 1, internalMarks: 48, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 96, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE3047', courseTitle: 'Big Data Analytics', credits: 3, internalMarks: 36, maxInternal: 40, endTermMarks: 52, maxEndTerm: 60, totalMarks: 88, grade: 'A (GP: 9)', status: 'Pass' },
-      { courseCode: 'CSE3047L', courseTitle: 'Big Data Analytics Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'CSE3745', courseTitle: 'Generative AI & LLMs', credits: 4, internalMarks: 40, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
-      { courseCode: 'TRA2501', courseTitle: 'Summer Internship / Training Evaluation', credits: 6, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' }
+      { courseCode: 'ENP2763', courseTitle: 'Entrepreneurship Development', credits: 3, internalMarks: 37, maxInternal: 40, endTermMarks: 52, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'CSE3013', courseTitle: 'Web Application Development', credits: 3, internalMarks: 36, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 89, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'CSE3013L', courseTitle: 'Web Application Development Lab', credits: 1, internalMarks: 49, maxInternal: 50, endTermMarks: 48, maxEndTerm: 50, totalMarks: 97, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE3047', courseTitle: 'Image Processing and Machine Vision: The Visual Intelligence Behind AI', credits: 3, internalMarks: 40, maxInternal: 40, endTermMarks: 58, maxEndTerm: 60, totalMarks: 98, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE3047L', courseTitle: 'Image Processing and Machine Vision: The Visual Intelligence Behind AI Lab', credits: 1, internalMarks: 50, maxInternal: 50, endTermMarks: 49, maxEndTerm: 50, totalMarks: 99, grade: 'A+ (GP: 10)', status: 'Pass' },
+      { courseCode: 'CSE3745', courseTitle: 'Principles of Distributed Systems: Inside the World of Cooperative Computing', credits: 4, internalMarks: 37, maxInternal: 40, endTermMarks: 53, maxEndTerm: 60, totalMarks: 90, grade: 'A (GP: 9)', status: 'Pass' },
+      { courseCode: 'TRA2501', courseTitle: 'Comprehensive Skill Development', credits: 2, internalMarks: 33, maxInternal: 40, endTermMarks: 48, maxEndTerm: 60, totalMarks: 81, grade: 'B+ (GP: 8)', status: 'Pass' }
     ]
   },
 
@@ -349,7 +350,7 @@ export const MOCK_SEMESTER_RESULTS: Record<string, SemesterResult> = {
     academicYear: '2026-2027',
     program: 'B.Tech Computer Science & Engineering (AI & ML) — GDGU',
     sgpa: 0,
-    cgpa: 9.26,
+    cgpa: 9.55,
     totalCreditsEarned: 0,
     publishedDate: '',
     remarks: 'Examinations in progress / Not Declared on GDGU DigiCampus.',
