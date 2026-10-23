@@ -69,9 +69,9 @@ export const SiteMapModal: React.FC<SiteMapModalProps> = ({ isOpen, onClose, onS
             </div>
           </div>
 
-          <h4 style={{ margin: '20px 0 12px 0', fontSize: '0.92rem', color: '#f1f5f9', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h4 style={{ margin: '20px 0 12px 0', fontSize: '0.95rem', color: '#000000', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span>Targeted URL Segment Registry</span>
-            <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 400 }}>({segments.length} Registered Endpoints)</span>
+            <span style={{ fontSize: '0.74rem', color: '#555555', fontWeight: 600 }}>({segments.length} Registered Endpoints)</span>
           </h4>
 
           <div className="segment-registry-list">

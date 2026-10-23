@@ -54,14 +54,15 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({ isOpen, onClos
                 <div style={{
                   padding: '16px',
                   borderRadius: '10px',
-                  background: suiteResults.routingPassed ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                  border: `1px solid ${suiteResults.routingPassed ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`
+                  background: suiteResults.routingPassed ? 'var(--neo-mint-light)' : '#FEE2E2',
+                  border: '2px solid #000000',
+                  boxShadow: '3px 3px 0px #000000'
                 }}>
-                  <div style={{ fontSize: '0.74rem', color: '#94a3b8' }}>ROUTING ACCURACY (PRD TARGET: ≥90%)</div>
-                  <div style={{ fontSize: '1.6rem', fontWeight: 800, color: suiteResults.routingPassed ? '#34d399' : '#f87171' }}>
+                  <div style={{ fontSize: '0.74rem', color: '#000000', fontWeight: 800 }}>ROUTING ACCURACY (TARGET: ≥90%)</div>
+                  <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#000000' }}>
                     {suiteResults.accuracyPercentage}%
                   </div>
-                  <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '4px' }}>
+                  <div style={{ fontSize: '0.72rem', color: '#374151', marginTop: '4px', fontWeight: 600 }}>
                     {suiteResults.passedScenarios} of {suiteResults.totalScenarios} scenarios correct
                   </div>
                 </div>
@@ -69,15 +70,16 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({ isOpen, onClos
                 <div style={{
                   padding: '16px',
                   borderRadius: '10px',
-                  background: 'rgba(59, 130, 246, 0.1)',
-                  border: '1px solid rgba(59, 130, 246, 0.3)'
+                  background: 'var(--neo-lilac-light)',
+                  border: '2px solid #000000',
+                  boxShadow: '3px 3px 0px #000000'
                 }}>
-                  <div style={{ fontSize: '0.74rem', color: '#94a3b8' }}>PRIVACY & FAIL-CLOSED SAFETY</div>
-                  <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#60a5fa', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <ShieldCheck size={24} color="#60a5fa" />
+                  <div style={{ fontSize: '0.74rem', color: '#000000', fontWeight: 800 }}>PRIVACY & FAIL-CLOSED SAFETY</div>
+                  <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#000000', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <ShieldCheck size={24} color="#000000" />
                     <span>VERIFIED</span>
                   </div>
-                  <div style={{ fontSize: '0.72rem', color: '#94a3b8', marginTop: '4px' }}>
+                  <div style={{ fontSize: '0.72rem', color: '#374151', marginTop: '4px', fontWeight: 600 }}>
                     Expired session & layout changes fail-closed
                   </div>
                 </div>
@@ -85,8 +87,9 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({ isOpen, onClos
                 <div style={{
                   padding: '16px',
                   borderRadius: '10px',
-                  background: 'rgba(255, 255, 255, 0.04)',
-                  border: '1px solid var(--border-subtle)',
+                  background: '#FFFFFF',
+                  border: '2px solid #000000',
+                  boxShadow: '3px 3px 0px #000000',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
@@ -136,40 +139,44 @@ export const EvaluationModal: React.FC<EvaluationModalProps> = ({ isOpen, onClos
                     style={{
                       padding: '12px 16px',
                       borderRadius: '8px',
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid var(--border-subtle)',
+                      background: '#FFFFFF',
+                      border: '2px solid #000000',
+                      boxShadow: '2px 2px 0px #000000',
                       display: 'flex',
                       alignItems: 'flex-start',
                       gap: '12px'
                     }}
                   >
                     {item.passed ? (
-                      <CheckCircle size={18} color="#34d399" style={{ flexShrink: 0, marginTop: '2px' }} />
+                      <CheckCircle size={18} color="#059669" style={{ flexShrink: 0, marginTop: '2px' }} />
                     ) : (
-                      <XCircle size={18} color="#f87171" style={{ flexShrink: 0, marginTop: '2px' }} />
+                      <XCircle size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
                     )}
 
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontWeight: 600, fontSize: '0.88rem', color: '#f8fafc' }}>
+                        <span style={{ fontWeight: 700, fontSize: '0.88rem', color: '#000000' }}>
                           "{item.question}"
                         </span>
                         <span style={{
                           fontSize: '0.7rem',
                           fontFamily: 'var(--font-mono)',
+                          fontWeight: 700,
                           padding: '2px 8px',
                           borderRadius: '4px',
-                          background: 'rgba(255, 255, 255, 0.08)'
+                          background: 'var(--neo-yellow)',
+                          border: '1px solid #000000',
+                          color: '#000000'
                         }}>
                           {item.scenarioId}
                         </span>
                       </div>
 
-                      <div style={{ fontSize: '0.76rem', color: '#94a3b8', marginTop: '4px' }}>
-                        Expected: <strong style={{ color: '#cbd5e1' }}>{item.expectedCategory}</strong> | Actual: <strong style={{ color: item.passed ? '#34d399' : '#f87171' }}>{item.actualCategory}</strong>
+                      <div style={{ fontSize: '0.76rem', color: '#374151', marginTop: '4px', fontWeight: 600 }}>
+                        Expected: <strong style={{ color: '#000000' }}>{item.expectedCategory}</strong> | Actual: <strong style={{ color: item.passed ? '#059669' : '#DC2626' }}>{item.actualCategory}</strong>
                       </div>
 
-                      <div style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '2px', fontStyle: 'italic' }}>
+                      <div style={{ fontSize: '0.74rem', color: '#4B5563', marginTop: '2px', fontStyle: 'italic', fontWeight: 500 }}>
                         {item.notes}
                       </div>
                     </div>

@@ -101,30 +101,30 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
 
           {/* File Picker */}
           <div style={{
-            border: '2px dashed rgba(255, 255, 255, 0.15)',
+            border: '2px dashed #000000',
             borderRadius: '8px',
             padding: '16px',
             textAlign: 'center',
-            background: 'rgba(255, 255, 255, 0.02)',
-            cursor: 'pointer'
+            background: 'var(--neo-yellow-light)',
+            cursor: 'pointer',
+            boxShadow: '2px 2px 0px #000000'
           }}>
-            <FileText size={24} color="#60a5fa" style={{ margin: '0 auto 8px auto' }} />
-            <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>Select a document file (.txt, .md, .csv)</div>
+            <FileText size={24} color="#000000" style={{ margin: '0 auto 8px auto' }} />
+            <div style={{ fontSize: '0.82rem', color: '#000000', fontWeight: 700 }}>Select a document file (.txt, .md, .csv)</div>
             <input
               type="file"
               accept=".txt,.md,.markdown,.csv"
               onChange={handleFileUpload}
-              style={{ marginTop: '8px', fontSize: '0.78rem', color: '#94a3b8' }}
+              style={{ marginTop: '8px', fontSize: '0.78rem', color: '#000000', fontWeight: 600 }}
             />
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '12px' }}>
             <div>
-              <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>Document Title *</label>
+              <label className="form-label">Document Title *</label>
               <input
                 type="text"
-                className="chat-input"
-                style={{ width: '100%', padding: '8px 12px', background: 'var(--bg-input)', border: '1px solid var(--border-subtle)', borderRadius: '6px' }}
+                className="form-input"
                 placeholder="e.g. AI Laboratory Safety & GPU Access Norms 2026"
                 value={title}
                 onChange={e => setTitle(e.target.value)}
@@ -132,11 +132,11 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
               />
             </div>
             <div>
-              <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>Category</label>
+              <label className="form-label">Category</label>
               <select
                 value={category}
                 onChange={e => setCategory(e.target.value as any)}
-                style={{ width: '100%', padding: '8px 12px', background: 'var(--bg-input)', border: '1px solid var(--border-subtle)', borderRadius: '6px', color: '#ffffff', fontSize: '0.8rem' }}
+                className="form-select"
               >
                 <option value="Academics">Academics</option>
                 <option value="Examinations">Examinations</option>
@@ -151,33 +151,30 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
             <div>
-              <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>Governing Body / Owner</label>
+              <label className="form-label">Governing Body / Owner</label>
               <input
                 type="text"
-                className="chat-input"
-                style={{ width: '100%', padding: '8px 12px', background: 'var(--bg-input)', border: '1px solid var(--border-subtle)', borderRadius: '6px' }}
+                className="form-input"
                 placeholder="e.g. Dept. of Computer Science"
                 value={owner}
                 onChange={e => setOwner(e.target.value)}
               />
             </div>
             <div>
-              <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>Section / Clause</label>
+              <label className="form-label">Section / Clause</label>
               <input
                 type="text"
-                className="chat-input"
-                style={{ width: '100%', padding: '8px 12px', background: 'var(--bg-input)', border: '1px solid var(--border-subtle)', borderRadius: '6px' }}
+                className="form-input"
                 placeholder="e.g. Clause 3.2 — GPU Quota"
                 value={section}
                 onChange={e => setSection(e.target.value)}
               />
             </div>
             <div>
-              <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>Effective Date</label>
+              <label className="form-label">Effective Date</label>
               <input
                 type="text"
-                className="chat-input"
-                style={{ width: '100%', padding: '8px 12px', background: 'var(--bg-input)', border: '1px solid var(--border-subtle)', borderRadius: '6px' }}
+                className="form-input"
                 placeholder="e.g. January 2026"
                 value={effectiveDate}
                 onChange={e => setEffectiveDate(e.target.value)}
@@ -186,11 +183,10 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
           </div>
 
           <div>
-            <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>Keywords (comma separated)</label>
+            <label className="form-label">Keywords (comma separated)</label>
             <input
               type="text"
-              className="chat-input"
-              style={{ width: '100%', padding: '8px 12px', background: 'var(--bg-input)', border: '1px solid var(--border-subtle)', borderRadius: '6px' }}
+              className="form-input"
               placeholder="e.g. gpu, lab, quota, server, machine learning, access hours"
               value={keywords}
               onChange={e => setKeywords(e.target.value)}
@@ -198,10 +194,10 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
           </div>
 
           <div>
-            <label style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>Policy Text Content *</label>
+            <label className="form-label">Policy Text Content *</label>
             <textarea
-              className="chat-input"
-              style={{ width: '100%', minHeight: '120px', padding: '10px 12px', background: 'var(--bg-input)', border: '1px solid var(--border-subtle)', borderRadius: '6px', resize: 'vertical' }}
+              className="form-input"
+              style={{ minHeight: '120px', resize: 'vertical' }}
               placeholder="Paste the official regulation text or guidelines here..."
               value={content}
               onChange={e => setContent(e.target.value)}

@@ -47,17 +47,17 @@ export const MessageCard: React.FC<MessageCardProps> = ({ message, onActionClick
       // Bold handling
       const formattedLine = line.split(/(\*\*.*?\*\*)/g).map((part, pIdx) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={pIdx} style={{ color: '#ffffff' }}>{part.slice(2, -2)}</strong>;
+          return <strong key={pIdx} className="bubble-strong">{part.slice(2, -2)}</strong>;
         }
         if (part.startsWith('*') && part.endsWith('*')) {
-          return <em key={pIdx} style={{ color: '#cbd5e1' }}>{part.slice(1, -1)}</em>;
+          return <em key={pIdx} className="bubble-em">{part.slice(1, -1)}</em>;
         }
         return part;
       });
 
       if (line.startsWith('### ')) {
         return (
-          <h4 key={idx} style={{ margin: '10px 0 6px 0', color: 'var(--matcha-mint)', fontSize: '0.95rem' }}>
+          <h4 key={idx} className="bubble-heading">
             {line.replace('### ', '')}
           </h4>
         );
@@ -65,8 +65,8 @@ export const MessageCard: React.FC<MessageCardProps> = ({ message, onActionClick
 
       if (line.startsWith('• ') || line.startsWith('- ')) {
         return (
-          <div key={idx} style={{ display: 'flex', gap: '8px', paddingLeft: '8px', margin: '3px 0' }}>
-            <span style={{ color: 'var(--sakura-blossom)' }}>•</span>
+          <div key={idx} className="bubble-bullet-row">
+            <span className="bubble-bullet-dot">■</span>
             <div>{formattedLine}</div>
           </div>
         );
@@ -143,8 +143,8 @@ export const MessageCard: React.FC<MessageCardProps> = ({ message, onActionClick
 
           {/* Portal Verification Badge */}
           {message.portalSource && (
-            <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', color: '#6ee7b7', background: 'rgba(16, 185, 129, 0.1)', padding: '6px 12px', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.25)' }}>
-              <CheckCircle2 size={16} color="#34d399" />
+            <div className="portal-verification-pill">
+              <CheckCircle2 size={16} />
               <span>
                 Verified extraction via <strong>{message.portalSource.section}</strong> at {message.portalSource.retrievedAt}
               </span>
@@ -160,36 +160,21 @@ export const MessageCard: React.FC<MessageCardProps> = ({ message, onActionClick
           {message.intent && (
             <button
               onClick={() => setShowRoutingTrace(!showRoutingTrace)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--text-dim)',
-                cursor: 'pointer',
-                fontSize: '0.72rem',
-                textDecoration: 'underline'
-              }}
+              className="explain-route-btn"
             >
               {showRoutingTrace ? 'Hide route logic' : 'Explain route'}
             </button>
           )}
 
           {message.isError && (
-            <span style={{ color: '#f87171', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span className="safe-failure-badge">
               <AlertCircle size={12} /> Safe failure
             </span>
           )}
         </div>
 
         {showRoutingTrace && message.intent && (
-          <div style={{
-            fontSize: '0.74rem',
-            fontFamily: 'var(--font-mono)',
-            padding: '8px 12px',
-            borderRadius: '6px',
-            background: 'rgba(0, 0, 0, 0.4)',
-            border: '1px solid var(--border-subtle)',
-            color: '#cbd5e1'
-          }}>
+          <div className="routing-trace-box">
             <div><strong>Route:</strong> {message.intent.category} (Confidence: {(message.intent.confidence * 100).toFixed(0)}%)</div>
             <div style={{ marginTop: '4px' }}><strong>Reasoning:</strong> {message.intent.reasoning}</div>
           </div>
