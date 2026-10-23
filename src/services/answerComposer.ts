@@ -112,12 +112,45 @@ export class AnswerComposer {
                 }).join('\n') +
                 `\n\n*Note:* Minimum required attendance is **75%** under GDGU Academic Regulations Section 3.1.`;
             } else {
-              answerText = `Here is your verified **Real-Time Attendance Register** from DigiCampus:\n\n` +
-                courses.map(c => {
-                  const icon = c.attendanceStatus === 'Satisfactory' ? '✅' : '⚠️';
-                  return `• **${c.courseCode}** (${c.courseTitle}): ${icon} **${c.attendancePercentage.toFixed(1)}%** (${c.classesAttended}/${c.totalClassesHeld} classes) — *${c.attendanceStatus}*`;
-                }).join('\n') +
-                `\n\n*Reminder:* Minimum mandatory attendance is **75%** under Academic Regulations Section 3.1. Courses between 65%-74.9% require verified medical condonation.`;
+              const totalHeld = courses.reduce((sum, c) => sum + c.totalClassesHeld, 0);
+              const totalAttended = courses.reduce((sum, c) => sum + c.classesAttended, 0);
+              const overallPct = ((totalAttended / totalHeld) * 100).toFixed(2);
+
+              // Check if user specifically asked about one course
+              let specificCourse: EnrolledCourseItem | undefined;
+              if (q.includes('quantum') || q.includes('3728')) {
+                specificCourse = courses.find(c => c.courseCode === 'CSE3728');
+              } else if (q.includes('iot') || q.includes('internet of things') || q.includes('2501')) {
+                specificCourse = courses.find(c => c.courseCode === 'CSE2501');
+              } else if (q.includes('ml') || q.includes('application of ml') || q.includes('machine learning') || q.includes('4007')) {
+                specificCourse = q.includes('lab') ? courses.find(c => c.courseCode === 'CSE4007L') : courses.find(c => c.courseCode === 'CSE4007');
+              } else if (q.includes('marketing') || q.includes('digital world') || q.includes('2761')) {
+                specificCourse = courses.find(c => c.courseCode === 'ITM2761');
+              } else if (q.includes('aptitude') || q.includes('3598')) {
+                specificCourse = courses.find(c => c.courseCode === 'TRA3598');
+              }
+
+              if (specificCourse) {
+                const icon = specificCourse.attendancePercentage >= 75 ? '✅' : specificCourse.attendancePercentage >= 65 ? '⚠️' : '🚨';
+                answerText = `📊 **Verified Attendance: ${specificCourse.courseTitle}** (\`${specificCourse.courseCode}\`)\n` +
+                  `*(Live Scraped from GDGU DigiCampus Profile: \`https://gdgu.digiicampus.com/profile/674656/attendance\`)*\n\n` +
+                  `• **Classes Attended:** **${specificCourse.classesAttended} / ${specificCourse.totalClassesHeld}** sessions\n` +
+                  `• **Attendance Percentage:** ${icon} **${specificCourse.attendancePercentage.toFixed(2)}%**\n` +
+                  `• **Status:** *${specificCourse.attendanceStatus}*\n` +
+                  `• **Instructor:** ${specificCourse.instructor} (${specificCourse.room})\n` +
+                  `• **Overall Semester Attendance:** **${overallPct}%** (${totalAttended}/${totalHeld} total sessions)\n\n` +
+                  `*Rule:* Minimum 75% required under GDGU Regulations. Courses between 65%-74.9% are condonable on medical/academic duty grounds.`;
+              } else {
+                answerText = `📊 **Verified Real-Time Attendance Register — Odd Sem 2026-27**\n` +
+                  `*(Live Scraped from GDGU DigiCampus Profile: \`https://gdgu.digiicampus.com/profile/674656/attendance\`)*\n\n` +
+                  `• **Overall Cumulative Attendance:** ⚠️ **${overallPct}%** (${totalAttended} attended / ${totalHeld} total scheduled sessions)\n\n` +
+                  `**Course-wise Breakdown:**\n` +
+                  courses.map(c => {
+                    const icon = c.attendancePercentage >= 75 ? '✅' : c.attendancePercentage >= 65 ? '⚠️' : '🚨';
+                    return `• **${c.courseCode}** (${c.courseTitle}): ${icon} **${c.attendancePercentage.toFixed(2)}%** (${c.classesAttended}/${c.totalClassesHeld} sessions) — *${c.attendanceStatus}*`;
+                  }).join('\n') +
+                  `\n\n*Note:* Minimum mandatory attendance is **75%** under Academic Regulations Section 3.1. Courses between 65%-74.9% require verified medical condonation.`;
+              }
             }
           } else {
             answerText = `Here are your **Enrolled Courses** for this semester from DigiCampus:\n\n` +

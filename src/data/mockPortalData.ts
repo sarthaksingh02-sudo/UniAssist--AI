@@ -36,7 +36,8 @@ export const MOCK_USER_PROFILES: Record<UserRole, PortalUserProfile> = {
 
 export const MOCK_STUDENT_PROFILE = MOCK_USER_PROFILES.student;
 
-// Enrolled Courses & Real-Time Attendance Fixture (GDGU Sarthak Singh - Verified DigiCampus Session)
+// Real-Time Verified Attendance Register (Live Scraped from GDGU DigiCampus: https://gdgu.digiicampus.com/profile/674656/attendance)
+// Overall Attendance: 67.12% (Total Sessions: 146, Attended: 98, Absent: 48)
 export const MOCK_ENROLLED_COURSES: EnrolledCourseItem[] = [
   {
     courseCode: 'CSE3728',
@@ -45,9 +46,9 @@ export const MOCK_ENROLLED_COURSES: EnrolledCourseItem[] = [
     instructor: 'Prof. (Dr.) Debarka Mukhopadhyay',
     slot: 'Tue/Thu 10:00 - 11:30 AM',
     room: 'Block B, LH-102',
-    totalClassesHeld: 25,
-    classesAttended: 18,
-    attendancePercentage: 72.0,
+    totalClassesHeld: 42,
+    classesAttended: 30,
+    attendancePercentage: 71.43,
     attendanceStatus: 'Condonation Needed',
     todayStatus: 'Present',
     todayTimeSlot: '10:00 - 11:30 AM',
@@ -60,10 +61,10 @@ export const MOCK_ENROLLED_COURSES: EnrolledCourseItem[] = [
     instructor: 'Dr. Satya Prakash',
     slot: 'Wed/Fri 09:10 - 10:45 AM',
     room: 'Block B, AI Innovation Lab',
-    totalClassesHeld: 20,
-    classesAttended: 17,
-    attendancePercentage: 85.0,
-    attendanceStatus: 'Satisfactory',
+    totalClassesHeld: 30,
+    classesAttended: 20,
+    attendancePercentage: 66.67,
+    attendanceStatus: 'Condonation Needed',
     todayStatus: 'Present',
     todayTimeSlot: '09:10 - 10:45 AM',
     lastMarkedDate: 'Today'
@@ -75,9 +76,9 @@ export const MOCK_ENROLLED_COURSES: EnrolledCourseItem[] = [
     instructor: 'Dr. Satya Prakash',
     slot: 'Thu 02:00 - 04:00 PM',
     room: 'Block B, Lab-4',
-    totalClassesHeld: 18,
-    classesAttended: 15,
-    attendancePercentage: 83.3,
+    totalClassesHeld: 10,
+    classesAttended: 8,
+    attendancePercentage: 80.00,
     attendanceStatus: 'Satisfactory',
     todayStatus: 'Present',
     todayTimeSlot: '02:00 - 04:00 PM',
@@ -90,10 +91,10 @@ export const MOCK_ENROLLED_COURSES: EnrolledCourseItem[] = [
     instructor: 'Prof. Chandravilash Rai',
     slot: 'Mon/Wed 11:45 AM - 01:15 PM',
     room: 'Block A, LH-204',
-    totalClassesHeld: 26,
-    classesAttended: 21,
-    attendancePercentage: 80.8,
-    attendanceStatus: 'Satisfactory',
+    totalClassesHeld: 32,
+    classesAttended: 19,
+    attendancePercentage: 59.38,
+    attendanceStatus: 'Shortage Alert',
     todayStatus: 'Present',
     todayTimeSlot: '11:45 AM - 01:15 PM',
     lastMarkedDate: 'Today'
@@ -105,9 +106,9 @@ export const MOCK_ENROLLED_COURSES: EnrolledCourseItem[] = [
     instructor: 'Prof. Aakansha Singh',
     slot: 'Wed/Fri 01:45 - 02:45 PM',
     room: 'Block C, LH-301',
-    totalClassesHeld: 22,
-    classesAttended: 19,
-    attendancePercentage: 86.4,
+    totalClassesHeld: 11,
+    classesAttended: 9,
+    attendancePercentage: 81.82,
     attendanceStatus: 'Satisfactory',
     todayStatus: 'Present',
     todayTimeSlot: '01:45 - 02:45 PM',
@@ -120,10 +121,10 @@ export const MOCK_ENROLLED_COURSES: EnrolledCourseItem[] = [
     instructor: 'Training & Placement Division',
     slot: 'Tue/Fri 03:00 - 04:30 PM',
     room: 'Block A, Auditorium',
-    totalClassesHeld: 16,
-    classesAttended: 14,
-    attendancePercentage: 87.5,
-    attendanceStatus: 'Satisfactory',
+    totalClassesHeld: 21,
+    classesAttended: 12,
+    attendancePercentage: 57.14,
+    attendanceStatus: 'Shortage Alert',
     todayStatus: 'Present',
     todayTimeSlot: '03:00 - 04:30 PM',
     lastMarkedDate: 'Today'

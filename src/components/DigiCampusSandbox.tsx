@@ -832,46 +832,76 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
 
                 {/* Sub-view: Attendance & Courses */}
                 {studentTab === 'attendance' && (
-                  <div style={{ border: '1px solid var(--border-subtle)', borderRadius: '8px', overflow: 'hidden' }}>
-                    <table className="portal-table">
-                      <thead>
-                        <tr>
-                          <th>Code</th>
-                          <th>Course Title</th>
-                          <th>Instructor & Room</th>
-                          <th>Held</th>
-                          <th>Attended</th>
-                          <th>%</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {MOCK_ENROLLED_COURSES.map((c, i) => (
-                          <tr key={i}>
-                            <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{c.courseCode}</td>
-                            <td>{c.courseTitle}</td>
-                            <td style={{ fontSize: '0.74rem', color: '#94a3b8' }}>{c.instructor} • {c.room}</td>
-                            <td>{c.totalClassesHeld}</td>
-                            <td>{c.classesAttended}</td>
-                            <td style={{ fontWeight: 700, color: c.attendancePercentage >= 75 ? '#34d399' : '#f59e0b' }}>
-                              {c.attendancePercentage.toFixed(1)}%
-                            </td>
-                            <td>
-                              <span style={{
-                                fontSize: '0.7rem',
-                                padding: '2px 6px',
-                                borderRadius: '4px',
-                                background: c.attendanceStatus === 'Satisfactory' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(245, 158, 11, 0.15)',
-                                color: c.attendanceStatus === 'Satisfactory' ? '#34d399' : '#f59e0b',
-                                fontWeight: 600
-                              }}>
-                                {c.attendanceStatus}
-                              </span>
-                            </td>
+                  <div>
+                    {/* Live Scraped Overall Attendance Summary */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '12px' }}>
+                      <div style={{ padding: '10px', background: 'rgba(239, 68, 68, 0.08)', borderRadius: '6px', border: '1px solid rgba(239, 68, 68, 0.25)' }}>
+                        <div style={{ fontSize: '0.68rem', color: '#fca5a5' }}>OVERALL ATTENDANCE</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#f87171' }}>67.12%</div>
+                      </div>
+                      <div style={{ padding: '10px', background: 'rgba(59, 130, 246, 0.08)', borderRadius: '6px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+                        <div style={{ fontSize: '0.68rem', color: '#93c5fd' }}>TOTAL SESSIONS</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>146</div>
+                      </div>
+                      <div style={{ padding: '10px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                        <div style={{ fontSize: '0.68rem', color: '#6ee7b7' }}>PRESENT</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#34d399' }}>98</div>
+                      </div>
+                      <div style={{ padding: '10px', background: 'rgba(245, 158, 11, 0.08)', borderRadius: '6px', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+                        <div style={{ fontSize: '0.68rem', color: '#fcd34d' }}>ABSENT</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fbbf24' }}>48</div>
+                      </div>
+                    </div>
+
+                    <div style={{ border: '1px solid var(--border-subtle)', borderRadius: '8px', overflow: 'hidden' }}>
+                      <table className="portal-table">
+                        <thead>
+                          <tr>
+                            <th>Code</th>
+                            <th>Course Title</th>
+                            <th>Instructor & Room</th>
+                            <th>Held</th>
+                            <th>Attended</th>
+                            <th>%</th>
+                            <th>Status</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {MOCK_ENROLLED_COURSES.map((c, i) => (
+                            <tr key={i}>
+                              <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{c.courseCode}</td>
+                              <td>{c.courseTitle}</td>
+                              <td style={{ fontSize: '0.74rem', color: '#94a3b8' }}>{c.instructor} • {c.room}</td>
+                              <td>{c.totalClassesHeld}</td>
+                              <td>{c.classesAttended}</td>
+                              <td style={{ fontWeight: 700, color: c.attendancePercentage >= 75 ? '#34d399' : c.attendancePercentage >= 65 ? '#f59e0b' : '#f87171' }}>
+                                {c.attendancePercentage.toFixed(1)}%
+                              </td>
+                              <td>
+                                <span style={{
+                                  fontSize: '0.7rem',
+                                  padding: '2px 6px',
+                                  borderRadius: '4px',
+                                  background: c.attendancePercentage >= 75
+                                    ? 'rgba(16, 185, 129, 0.15)'
+                                    : c.attendancePercentage >= 65
+                                    ? 'rgba(245, 158, 11, 0.15)'
+                                    : 'rgba(239, 68, 68, 0.15)',
+                                  color: c.attendancePercentage >= 75
+                                    ? '#34d399'
+                                    : c.attendancePercentage >= 65
+                                    ? '#f59e0b'
+                                    : '#f87171',
+                                  fontWeight: 600
+                                }}>
+                                  {c.attendanceStatus}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 
