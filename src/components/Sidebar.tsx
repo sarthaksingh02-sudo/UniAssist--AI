@@ -307,7 +307,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="engine-status-pill" onClick={onOpenSettings} title="Click to configure API Key">
           <span className="live-status-dot" />
           <span className="engine-label">
-            {hasKey ? 'Gemini Active' : 'Edge-RAG (Free)'}
+            {hasKey ? LLMService.getActiveProviderName() : 'Edge-RAG (Free)'}
           </span>
         </div>
       </div>

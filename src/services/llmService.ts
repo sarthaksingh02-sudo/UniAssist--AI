@@ -2,6 +2,11 @@ import { LLMProvider, LLMSettings, ChatMessage } from '../types';
 
 const STORAGE_KEY = 'uniassist_llm_settings';
 
+// OpenRouter uses OpenAI-compatible chat completions API
+const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
+const OPENROUTER_SITE_URL = 'https://uniassist-ai.gdgu.edu.in'; // referrer for OpenRouter dashboard
+const OPENROUTER_APP_NAME = 'UniAssist AI – GD Goenka University';
+
 export class LLMService {
   private static settings: LLMSettings = LLMService.loadSettings();
 
@@ -15,9 +20,9 @@ export class LLMService {
       // Ignore localStorage parse errors
     }
     return {
-      provider: 'gemini',
+      provider: 'openrouter',
       apiKey: '',
-      model: 'gemini-1.5-flash',
+      model: 'deepseek/deepseek-chat-v3-5:free',
       temperature: 0.3
     };
   }
@@ -41,6 +46,10 @@ export class LLMService {
 
   public static getActiveProviderName(): string {
     if (!this.hasApiKey()) return 'In-Browser Edge RAG (Free)';
+    if (this.settings.provider === 'openrouter') {
+      const modelLabel = OPENROUTER_MODEL_LABELS[this.settings.model] || this.settings.model;
+      return `OpenRouter · ${modelLabel}`;
+    }
     if (this.settings.provider === 'gemini') {
       return this.settings.model === 'gemini-1.5-pro' ? 'Gemini 1.5 Pro' : 'Gemini 1.5 Flash';
     }
@@ -50,12 +59,48 @@ export class LLMService {
   /**
    * Test user API key validity against live provider endpoint
    */
-  public static async testConnection(apiKey: string, provider: LLMProvider, model = 'gemini-1.5-flash'): Promise<{ success: boolean; message: string }> {
+  public static async testConnection(
+    apiKey: string,
+    provider: LLMProvider,
+    model = 'deepseek/deepseek-chat-v3-5:free'
+  ): Promise<{ success: boolean; message: string }> {
     if (!apiKey || apiKey.trim().length < 5) {
       return { success: false, message: 'Please enter a valid API key string.' };
     }
 
     try {
+      if (provider === 'openrouter') {
+        const res = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey.trim()}`,
+            'HTTP-Referer': OPENROUTER_SITE_URL,
+            'X-Title': OPENROUTER_APP_NAME
+          },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: 'user', content: 'Reply with the word CONNECTED only.' }],
+            max_tokens: 10,
+            temperature: 0.1
+          })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          const errMsg = errData.error?.message || `HTTP ${res.status}`;
+          return { success: false, message: `OpenRouter verification failed: ${errMsg}` };
+        }
+
+        const data = await res.json();
+        const reply = data.choices?.[0]?.message?.content?.trim();
+        const modelUsed = data.model || model;
+        return {
+          success: true,
+          message: `✅ Connected to OpenRouter! Model: ${modelUsed}${reply ? ` · Reply: "${reply}"` : ''}`
+        };
+      }
+
       if (provider === 'gemini') {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey.trim())}`;
         const res = await fetch(url, {
@@ -73,8 +118,10 @@ export class LLMService {
           return { success: false, message: `Google Gemini verification failed: ${errMsg}` };
         }
 
-        return { success: true, message: `Successfully connected to Google Gemini (${model})!` };
-      } else if (provider === 'openai') {
+        return { success: true, message: `✅ Connected to Google Gemini (${model})!` };
+      }
+
+      if (provider === 'openai') {
         const res = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -93,32 +140,32 @@ export class LLMService {
           return { success: false, message: errData.error?.message || `HTTP ${res.status} error` };
         }
 
-        return { success: true, message: 'Successfully connected to OpenAI API!' };
+        return { success: true, message: '✅ Connected to OpenAI API!' };
       }
 
       return { success: true, message: 'Using local Edge RAG mode.' };
     } catch (err: any) {
-      return { success: false, message: `Network/Connection error: ${err.message || 'Check your internet connection'}` };
+      return { success: false, message: `Network error: ${err.message || 'Check your internet connection'}` };
     }
   }
 
   /**
-   * Generatively elaborates answer using cloud LLM when an API key is provided,
-   * otherwise preserves verified deterministic Edge-RAG response.
+   * Enriches Edge-RAG answer using cloud LLM when an API key is configured.
+   * Falls back to the deterministic Edge-RAG response if cloud call fails.
    */
   public static async enrichWithCloudLLM(
     query: string,
     baseResponse: ChatMessage
   ): Promise<ChatMessage> {
     if (!this.hasApiKey()) {
-      return baseResponse; // Use local deterministic Edge-RAG
+      return baseResponse; // Local deterministic Edge-RAG
     }
 
     try {
       const apiKey = this.settings.apiKey.trim();
-      const model = this.settings.model || 'gemini-1.5-flash';
+      const model = this.settings.model || 'deepseek/deepseek-chat-v3-5:free';
 
-      // Assemble ground truth context from knowledge chunks and portal data
+      // Assemble ground-truth context from knowledge chunks + live portal data
       let contextText = `AUTHORITATIVE CONTEXT FROM GD GOENKA UNIVERSITY:\n`;
       if (baseResponse.campusSources && baseResponse.campusSources.length > 0) {
         contextText += `Official Policies:\n` +
@@ -128,28 +175,60 @@ export class LLMService {
         contextText += `Live DigiCampus Portal Telemetry:\n${JSON.stringify(baseResponse.portalSource.data, null, 2)}\n\n`;
       }
 
-      const prompt = `You are UniAssist AI, the official intelligent university assistant for GD Goenka University (GDGU).
-Answer the user's inquiry based strictly on the verified institutional context below.
+      const systemPrompt = `You are UniAssist AI, the official intelligent university assistant for GD Goenka University (GDGU), India.
+Answer the user's inquiry based STRICTLY on the verified institutional context provided below.
+Do NOT hallucinate any facts, numbers, or policies outside the given context.
 
-${contextText}
-USER INQUIRY: "${query}"
+RULES:
+1. Maintain all exact numbers, thresholds (e.g. 75% attendance, 65% condonation), SGPA/CGPA values, dates, and section citations.
+2. If the user requests a write action (pay fee, change grade, enroll), politely confirm UniAssist AI is strictly read-only and direct them to the DigiCampus portal.
+3. Format using clean markdown (bold important terms, use bullet lists). Be concise, clear, and professional.
+4. Language: English. Tone: helpful university assistant.`;
 
-INSTRUCTIONS:
-1. Provide a direct, polite, helpful and clear answer.
-2. Maintain all exact numbers, percentage thresholds (e.g. 75% attendance, 65% condonation), SGPA/CGPA, dates, and section citations.
-3. If the user asks for write actions (e.g., pay fee, change grade, enroll), politely explain that UniAssist AI is strictly read-only and direct them to the manual portal.
-4. Format using clean markdown (bold terms, neat lists). Keep it concise and avoid fluff.`;
+      const userMessage = `${contextText}\nUSER INQUIRY: "${query}"`;
 
+      // ── OpenRouter (DeepSeek / any model) ──────────────────────────────────
+      if (this.settings.provider === 'openrouter') {
+        const res = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+            'HTTP-Referer': OPENROUTER_SITE_URL,
+            'X-Title': OPENROUTER_APP_NAME
+          },
+          body: JSON.stringify({
+            model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userMessage }
+            ],
+            temperature: this.settings.temperature ?? 0.3,
+            max_tokens: 900
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const generatedText = data.choices?.[0]?.message?.content?.trim();
+          if (generatedText && generatedText.length > 10) {
+            return { ...baseResponse, text: generatedText };
+          }
+        }
+      }
+
+      // ── Google Gemini ────────────────────────────────────────────────────────
       if (this.settings.provider === 'gemini') {
+        const fullPrompt = `${systemPrompt}\n\n${userMessage}`;
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
         const res = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
+            contents: [{ parts: [{ text: fullPrompt }] }],
             generationConfig: {
               temperature: this.settings.temperature ?? 0.3,
-              maxOutputTokens: 800
+              maxOutputTokens: 900
             }
           })
         });
@@ -158,10 +237,35 @@ INSTRUCTIONS:
           const data = await res.json();
           const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
           if (generatedText && generatedText.trim().length > 10) {
-            return {
-              ...baseResponse,
-              text: generatedText.trim()
-            };
+            return { ...baseResponse, text: generatedText.trim() };
+          }
+        }
+      }
+
+      // ── OpenAI ───────────────────────────────────────────────────────────────
+      if (this.settings.provider === 'openai') {
+        const res = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: userMessage }
+            ],
+            temperature: this.settings.temperature ?? 0.3,
+            max_tokens: 900
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const generatedText = data.choices?.[0]?.message?.content?.trim();
+          if (generatedText && generatedText.length > 10) {
+            return { ...baseResponse, text: generatedText };
           }
         }
       }
@@ -173,3 +277,21 @@ INSTRUCTIONS:
     return baseResponse;
   }
 }
+
+/** Human-readable labels for OpenRouter model IDs shown in the UI */
+export const OPENROUTER_MODEL_LABELS: Record<string, string> = {
+  'deepseek/deepseek-chat': 'DeepSeek V3 (Chat)',
+  'deepseek/deepseek-r1': 'DeepSeek R1 (Reasoning)',
+  'deepseek/deepseek-chat:free': 'DeepSeek V3 (Free)',
+  'deepseek/deepseek-r1:free': 'DeepSeek R1 (Free)',
+  'deepseek/deepseek-chat-v3-5:free': 'DeepSeek V3.5 (Free)',
+  'deepseek/deepseek-r1-0528:free': 'DeepSeek R1 0528 (Free)',
+  'google/gemini-2.0-flash-exp:free': 'Gemini 2.0 Flash (Free via OR)',
+  'google/gemini-flash-1.5': 'Gemini 1.5 Flash (via OR)',
+  'meta-llama/llama-3.3-70b-instruct:free': 'Llama 3.3 70B (Free)',
+  'mistralai/mistral-7b-instruct:free': 'Mistral 7B (Free)',
+  'custom': 'Custom Model ID (Type below)...'
+};
+
+/** Default model when user selects OpenRouter */
+export const OPENROUTER_DEFAULT_MODEL = 'deepseek/deepseek-chat';

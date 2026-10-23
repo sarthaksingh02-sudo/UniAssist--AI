@@ -173,7 +173,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           >
             <Sparkles size={14} color={hasApiKey ? '#34d399' : '#f472b6'} />
             <span className="engine-pill-text">
-              {hasApiKey ? 'Cloud LLM' : 'Edge-RAG (Free)'}
+              {hasApiKey ? LLMService.getActiveProviderName() : 'Edge-RAG (Free)'}
             </span>
           </button>
 

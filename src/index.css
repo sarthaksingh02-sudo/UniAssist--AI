@@ -2191,8 +2191,14 @@ body {
 
 .provider-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 540px) {
+  .provider-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .provider-card {

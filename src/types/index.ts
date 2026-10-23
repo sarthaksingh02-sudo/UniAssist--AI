@@ -192,7 +192,7 @@ export interface ChatSession {
   messages: ChatMessage[];
 }
 
-export type LLMProvider = 'gemini' | 'openai' | 'local_edge';
+export type LLMProvider = 'gemini' | 'openai' | 'openrouter' | 'local_edge';
 
 export interface LLMSettings {
   provider: LLMProvider;
