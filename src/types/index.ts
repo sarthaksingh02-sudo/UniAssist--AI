@@ -70,6 +70,9 @@ export interface EnrolledCourseItem {
   classesAttended: number;
   attendancePercentage: number;
   attendanceStatus: 'Satisfactory' | 'Condonation Needed' | 'Shortage Alert';
+  todayStatus?: 'Present' | 'Absent' | 'No Class Scheduled';
+  todayTimeSlot?: string;
+  lastMarkedDate?: string;
 }
 
 export interface FacultyClassItem {

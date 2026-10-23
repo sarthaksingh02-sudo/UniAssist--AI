@@ -167,8 +167,11 @@ export class LLMService {
       const apiKey = this.settings.apiKey.trim();
       const model = this.settings.model || 'deepseek/deepseek-chat-v3-5:free';
 
-      // Assemble ground-truth context from knowledge chunks + live portal data
+      // Assemble ground-truth context from knowledge chunks + live portal data + verified institutional synthesis
       let contextText = `AUTHORITATIVE CONTEXT FROM GD GOENKA UNIVERSITY:\n`;
+      if (baseResponse.text) {
+        contextText += `Verified Institutional Synthesis / Timetable Records:\n${baseResponse.text}\n\n`;
+      }
       if (baseResponse.campusSources && baseResponse.campusSources.length > 0) {
         contextText += `Official Policies:\n` +
           baseResponse.campusSources.map(s => `- [${s.documentTitle}, ${s.section}]: ${s.text}`).join('\n') + `\n\n`;
@@ -182,10 +185,12 @@ Answer the user's inquiry based STRICTLY on the verified institutional context p
 Do NOT hallucinate any facts, numbers, or policies outside the given context.
 
 RULES:
-1. Maintain all exact numbers, thresholds (e.g. 75% attendance, 65% condonation), SGPA/CGPA values, dates, and section citations.
-2. If the user requests a write action (pay fee, change grade, enroll), politely confirm UniAssist AI is strictly read-only and direct them to the DigiCampus portal.
-3. Format using clean markdown (bold important terms, use bullet lists). Be concise, clear, and professional.
-4. Language: English. Tone: helpful university assistant.`;
+1. Maintain all exact course titles (e.g. "Applications of ML in Industry", "Quantum Computing", "Internet of Things", "Marketing in the Digital World", "Aptitude Workshop").
+2. When the user asks about today's attendance ("was I marked present or absent today?"), directly cite today's lecture register from the provided Verified Institutional Synthesis, confirming which classes they were marked Present or Absent in today. Do NOT state that you lack day-wise data when today's attendance register is present in the context.
+3. Maintain all thresholds (e.g. 75% attendance, 65% condonation), SGPA/CGPA values, dates, and section citations.
+4. If the user requests a write action (pay fee, change grade, enroll), politely confirm UniAssist AI is strictly read-only and direct them to the DigiCampus portal.
+5. Format using clean markdown (bold important terms, use bullet lists). Be concise, clear, and professional.
+6. Language: English. Tone: helpful, authoritative university assistant.`;
 
       const userMessage = `${contextText}\nUSER INQUIRY: "${query}"`;
 

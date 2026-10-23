@@ -110,15 +110,16 @@ export const DIGICAMPUS_SITE_MAP: Record<PortalSegmentId, PortalSegmentDefinitio
       'how many credits', 'course registration', 'advisor'
     ],
     mockSnapshot: {
-      registeredCoursesCount: 5,
+      registeredCoursesCount: 6,
       totalCredits: 19,
       term: 'Odd Semester 2026-2027',
       courses: [
-        { code: 'CSE2501', title: 'Internet of Things', credits: 4, type: 'Core Theory + Lab', instructor: 'Chandravilash Rai' },
-        { code: 'CSE3728', title: 'Quantum Computing & Algorithms', credits: 4, type: 'Program Elective', instructor: 'Dr. Ramesh Sharma' },
-        { code: 'ITM2761', title: 'Information Technology Management', credits: 3, type: 'Management Core', instructor: 'Dr. Neha Varma' },
-        { code: 'CSE4007', title: 'AI in Industry & Capstone Project', credits: 6, type: 'Major Project', instructor: 'Dr. Alok Verma' },
-        { code: 'CSE4007L', title: 'AI in Industry Capstone Lab', credits: 2, type: 'Project Lab', instructor: 'Dr. Alok Verma' }
+        { code: 'CSE3728', title: 'Quantum Computing', credits: 4, type: 'Program Elective', instructor: 'Prof. (Dr.) Debarka Mukhopadhyay' },
+        { code: 'CSE4007', title: 'Applications of ML in Industry', credits: 4, type: 'Core Theory', instructor: 'Dr. Satya Prakash' },
+        { code: 'CSE4007L', title: 'Applications of ML in Industry Lab', credits: 2, type: 'Practical Lab', instructor: 'Dr. Satya Prakash' },
+        { code: 'CSE2501', title: 'Internet of Things', credits: 4, type: 'Core Theory + Lab', instructor: 'Prof. Chandravilash Rai' },
+        { code: 'ITM2761', title: 'Marketing in the Digital World', credits: 3, type: 'Management Core', instructor: 'Prof. Aakansha Singh' },
+        { code: 'TRA3598', title: 'Aptitude Workshop', credits: 2, type: 'Workshop / Training', instructor: 'Training & Placement Division' }
       ]
     }
   },

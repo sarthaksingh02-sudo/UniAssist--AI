@@ -36,67 +36,97 @@ export const MOCK_USER_PROFILES: Record<UserRole, PortalUserProfile> = {
 
 export const MOCK_STUDENT_PROFILE = MOCK_USER_PROFILES.student;
 
-// Enrolled Courses & Real-Time Attendance Fixture (GDGU Sarthak Singh - Current Term 2026-27)
+// Enrolled Courses & Real-Time Attendance Fixture (GDGU Sarthak Singh - Verified DigiCampus Session)
 export const MOCK_ENROLLED_COURSES: EnrolledCourseItem[] = [
   {
-    courseCode: 'CSE2501',
-    courseTitle: 'Internet of Things',
-    credits: 4,
-    instructor: 'Chandravilash Rai',
-    slot: 'Mon/Wed 09:10 - 10:00 AM (Lecture)',
-    room: 'Block A, LH-204',
-    totalClassesHeld: 26,
-    classesAttended: 21,
-    attendancePercentage: 80.8,
-    attendanceStatus: 'Satisfactory'
-  },
-  {
     courseCode: 'CSE3728',
-    courseTitle: 'Quantum Computing & Algorithms',
+    courseTitle: 'Quantum Computing',
     credits: 4,
-    instructor: 'Dr. Ramesh Sharma',
-    slot: 'Tue/Thu 10:15 - 11:45 AM',
+    instructor: 'Prof. (Dr.) Debarka Mukhopadhyay',
+    slot: 'Tue/Thu 10:00 - 11:30 AM',
     room: 'Block B, LH-102',
     totalClassesHeld: 25,
     classesAttended: 18,
     attendancePercentage: 72.0,
-    attendanceStatus: 'Condonation Needed'
-  },
-  {
-    courseCode: 'ITM2761',
-    courseTitle: 'Information Technology Management',
-    credits: 3,
-    instructor: 'Dr. Neha Varma',
-    slot: 'Wed/Fri 01:00 - 02:00 PM',
-    room: 'Block C, LH-301',
-    totalClassesHeld: 22,
-    classesAttended: 19,
-    attendancePercentage: 86.4,
-    attendanceStatus: 'Satisfactory'
+    attendanceStatus: 'Condonation Needed',
+    todayStatus: 'Present',
+    todayTimeSlot: '10:00 - 11:30 AM',
+    lastMarkedDate: 'Today'
   },
   {
     courseCode: 'CSE4007',
-    courseTitle: 'AI in Industry & Capstone Project',
-    credits: 6,
-    instructor: 'Dr. Alok Verma',
-    slot: 'Fri 02:00 - 05:00 PM',
+    courseTitle: 'Applications of ML in Industry',
+    credits: 4,
+    instructor: 'Dr. Satya Prakash',
+    slot: 'Wed/Fri 09:10 - 10:45 AM',
     room: 'Block B, AI Innovation Lab',
     totalClassesHeld: 20,
-    classesAttended: 16,
-    attendancePercentage: 80.0,
-    attendanceStatus: 'Satisfactory'
+    classesAttended: 17,
+    attendancePercentage: 85.0,
+    attendanceStatus: 'Satisfactory',
+    todayStatus: 'Present',
+    todayTimeSlot: '09:10 - 10:45 AM',
+    lastMarkedDate: 'Today'
   },
   {
     courseCode: 'CSE4007L',
-    courseTitle: 'AI in Industry Capstone Lab',
+    courseTitle: 'Applications of ML in Industry Lab',
     credits: 2,
-    instructor: 'Dr. Alok Verma',
+    instructor: 'Dr. Satya Prakash',
     slot: 'Thu 02:00 - 04:00 PM',
     room: 'Block B, Lab-4',
     totalClassesHeld: 18,
     classesAttended: 15,
     attendancePercentage: 83.3,
-    attendanceStatus: 'Satisfactory'
+    attendanceStatus: 'Satisfactory',
+    todayStatus: 'Present',
+    todayTimeSlot: '02:00 - 04:00 PM',
+    lastMarkedDate: 'Today'
+  },
+  {
+    courseCode: 'CSE2501',
+    courseTitle: 'Internet of Things',
+    credits: 4,
+    instructor: 'Prof. Chandravilash Rai',
+    slot: 'Mon/Wed 11:45 AM - 01:15 PM',
+    room: 'Block A, LH-204',
+    totalClassesHeld: 26,
+    classesAttended: 21,
+    attendancePercentage: 80.8,
+    attendanceStatus: 'Satisfactory',
+    todayStatus: 'Present',
+    todayTimeSlot: '11:45 AM - 01:15 PM',
+    lastMarkedDate: 'Today'
+  },
+  {
+    courseCode: 'ITM2761',
+    courseTitle: 'Marketing in the Digital World',
+    credits: 3,
+    instructor: 'Prof. Aakansha Singh',
+    slot: 'Wed/Fri 01:45 - 02:45 PM',
+    room: 'Block C, LH-301',
+    totalClassesHeld: 22,
+    classesAttended: 19,
+    attendancePercentage: 86.4,
+    attendanceStatus: 'Satisfactory',
+    todayStatus: 'Present',
+    todayTimeSlot: '01:45 - 02:45 PM',
+    lastMarkedDate: 'Today'
+  },
+  {
+    courseCode: 'TRA3598',
+    courseTitle: 'Aptitude Workshop',
+    credits: 2,
+    instructor: 'Training & Placement Division',
+    slot: 'Tue/Fri 03:00 - 04:30 PM',
+    room: 'Block A, Auditorium',
+    totalClassesHeld: 16,
+    classesAttended: 14,
+    attendancePercentage: 87.5,
+    attendanceStatus: 'Satisfactory',
+    todayStatus: 'Present',
+    todayTimeSlot: '03:00 - 04:30 PM',
+    lastMarkedDate: 'Today'
   }
 ];
 
@@ -138,7 +168,7 @@ export const MOCK_DEAN_APPROVALS: DeanApprovalItem[] = [
     studentIdMasked: '230160223096',
     studentNameMasked: 'Sarthak Singh',
     requestType: 'Industry Hackathon Attendance Condonation',
-    courseCode: 'ITM2761 (Information Technology Management)',
+    courseCode: 'ITM2761 (Marketing in the Digital World)',
     reason: 'Representing GD Goenka University at Smart India Hackathon Nationals.',
     status: 'Approved',
     submissionDate: 'October 14, 2026'

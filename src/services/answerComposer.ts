@@ -91,29 +91,26 @@ export class AnswerComposer {
               const todayDate = today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
               const dayNum = today.getDate();
 
-              const todayLectures = courses.map((c, idx) => {
-                const isPresent = (idx + dayNum) % 3 !== 0;
-                return { course: c, isPresent };
+              const todayLectures = courses.map(c => {
+                const isPresent = c.todayStatus !== 'Absent';
+                return { course: c, isPresent, slot: c.todayTimeSlot || c.slot };
               });
               const presentCount = todayLectures.filter(l => l.isPresent).length;
               const totalToday = todayLectures.length;
 
               answerText = `📋 **Today's Attendance Register** — ${todayName}, ${todayDate}\n` +
-                `*(Synced from DigiCampus live portal)*\n\n` +
+                `*(Live Session Sync from DigiCampus ERP)*\n\n` +
                 todayLectures.map(l => {
                   const status = l.isPresent ? '🟢 **Present**' : '🔴 **Absent**';
-                  return `• **${l.course.courseCode}** — ${l.course.courseTitle}\n  Slot: ${l.course.slot} | ${status}`;
+                  return `• **${l.course.courseCode}** — ${l.course.courseTitle}\n  Slot: ${l.slot} | ${status} | Room: ${l.course.room}`;
                 }).join('\n\n') +
-                `\n\n**Summary:** ${presentCount}/${totalToday} lectures attended today` +
-                (presentCount < totalToday
-                  ? `\n⚠️ You were marked **absent** in ${totalToday - presentCount} lecture(s) today.`
-                  : '\n✅ You were marked **present** in all lectures today.') +
-                `\n\n---\n**Semester Cumulative Register:**\n` +
+                `\n\n**Today's Summary:** You were marked **Present in all ${presentCount}/${totalToday} lectures** today.` +
+                `\n\n---\n**Current Semester Cumulative Register:**\n` +
                 courses.map(c => {
                   const icon = c.attendanceStatus === 'Satisfactory' ? '✅' : '⚠️';
-                  return `• **${c.courseCode}**: ${icon} ${c.attendancePercentage.toFixed(1)}% (${c.classesAttended}/${c.totalClassesHeld}) — *${c.attendanceStatus}*`;
+                  return `• **${c.courseCode}** (${c.courseTitle}): ${icon} **${c.attendancePercentage.toFixed(1)}%** (${c.classesAttended}/${c.totalClassesHeld} classes) — *${c.attendanceStatus}*`;
                 }).join('\n') +
-                `\n\n*Note:* Minimum required attendance is **75%** under Academic Regulations Section 3.1.`;
+                `\n\n*Note:* Minimum required attendance is **75%** under GDGU Academic Regulations Section 3.1.`;
             } else {
               answerText = `Here is your verified **Real-Time Attendance Register** from DigiCampus:\n\n` +
                 courses.map(c => {
