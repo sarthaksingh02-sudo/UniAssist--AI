@@ -24,7 +24,17 @@ import {
   Bell,
   Calendar,
   Home,
-  FileText
+  FileText,
+  Zap,
+  Sparkles,
+  Smartphone,
+  Mail,
+  Hash,
+  ArrowRight,
+  Activity,
+  Wifi,
+  Check,
+  Shield
 } from 'lucide-react';
 import { DigiCampusState, UserRole } from '../types';
 import {
@@ -36,11 +46,14 @@ import {
 } from '../data/mockPortalData';
 import { DIGICAMPUS_SITE_MAP } from '../data/digicampusSiteMap';
 import { PortalConnector } from '../services/portalConnector';
+import { LivePortalBridge } from '../services/livePortalBridge';
 
 interface DigiCampusSandboxProps {
   portalState: DigiCampusState;
   onStateChange: () => void;
 }
+
+type AuthMethodTab = 'TAB_SYNC' | 'ROLL_NO' | 'MOBILE' | 'EMAIL' | 'OFFICIAL_SSO';
 
 export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
   portalState,
@@ -48,9 +61,10 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
 }) => {
   const [studentTab, setStudentTab] = useState<'results' | 'attendance' | 'fees' | 'notices' | 'calendar' | 'courses'>('results');
   
-  // Real Login Form State (Defaulted to GD Goenka University credentials)
+  // Plaid-Style Gateway State
+  const [authMethod, setAuthMethod] = useState<AuthMethodTab>('TAB_SYNC');
   const [loginRole, setLoginRole] = useState<UserRole>(portalState.userRole || 'student');
-  const [loginUsername, setLoginUsername] = useState('230160223096');
+  const [identifierInput, setIdentifierInput] = useState('230160223096');
   const [loginFullName, setLoginFullName] = useState('Sarthak Singh');
   const [loginPassword, setLoginPassword] = useState('••••••••••••');
   const [showPassword, setShowPassword] = useState(false);
@@ -80,47 +94,75 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
     onStateChange();
   };
 
-  const handleRoleTabChange = (role: UserRole) => {
-    setLoginRole(role);
-    if (role === 'student') {
-      setLoginUsername('230160223096');
-      setLoginFullName('Sarthak Singh');
-    } else if (role === 'faculty') {
-      setLoginUsername('GDGU-FAC-1042');
-      setLoginFullName('Prof. Chandravilash Rai');
-    } else if (role === 'dean') {
-      setLoginUsername('GDGU-DEAN-001');
-      setLoginFullName('Prof. Anita Sen');
+  // 1-Click Plaid-Style Zero-Trust Tab Sync Handshake
+  const handleSyncActiveTab = async () => {
+    setIsAuthenticating(true);
+    setLoginMessage('Handshaking with active GDGU DigiCampus tab (https://gdgu.digiicampus.com/feed)...');
+
+    try {
+      const syncRes = await LivePortalBridge.syncActiveBrowserSession();
+      if (syncRes.success) {
+        PortalConnector.loginWithCredentials(
+          syncRes.user.rollNumber,
+          'student',
+          syncRes.user.name
+        );
+        setLoginMessage('✅ Session verified with zero credentials typed!');
+        setTimeout(() => {
+          setIsAuthenticating(false);
+          setLoginMessage(null);
+          onStateChange();
+        }, 400);
+      }
+    } catch {
+      setIsAuthenticating(false);
+      setLoginMessage(null);
     }
   };
 
-  const handleFormLogin = (e: React.FormEvent) => {
+  // Multi-Identifier Submission (Roll Number, Mobile No, Personal Email, or SSO)
+  const handleIdentifierSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!loginUsername.trim()) return;
+    if (!identifierInput.trim()) return;
 
     setIsAuthenticating(true);
-    setLoginMessage('Authenticating with GDGU Digii Identity Gateway...');
+    setLoginMessage(`Authenticating ${authMethod.replace('_', ' ')} with GDGU Identity Gateway...`);
 
     setTimeout(() => {
       PortalConnector.loginWithCredentials(
-        loginUsername.trim(),
+        identifierInput.trim(),
         loginRole,
         loginFullName.trim() || undefined
       );
       setIsAuthenticating(false);
       setLoginMessage(null);
       onStateChange();
-    }, 650);
+    }, 550);
+  };
+
+  const handleQuickPersonaSelect = (role: UserRole) => {
+    setLoginRole(role);
+    if (role === 'student') {
+      setIdentifierInput('230160223096');
+      setLoginFullName('Sarthak Singh');
+    } else if (role === 'faculty') {
+      setIdentifierInput('GDGU-FAC-1042');
+      setLoginFullName('Prof. Chandravilash Rai');
+    } else if (role === 'dean') {
+      setIdentifierInput('GDGU-DEAN-001');
+      setLoginFullName('Prof. Anita Sen');
+    }
   };
 
   const handleSignOut = () => {
     PortalConnector.disconnect();
+    LivePortalBridge.disconnect();
     onStateChange();
   };
 
   return (
-    <section className="glass-panel portal-pane">
-      {/* Browser Bar with exact GDGU DigiCampus URL */}
+    <section className="portal-pane">
+      {/* Neubrutalist Browser Bar with Live GDGU URL */}
       <div className="portal-browser-bar">
         <div className="browser-dots">
           <div className="dot red" />
@@ -128,9 +170,9 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
           <div className="dot green" />
         </div>
         <div className="url-bar">
-          <Lock size={12} color="#10b981" />
+          <Lock size={13} color="#16A34A" strokeWidth={2.4} />
           <span>
-            {portalState.authStatus === 'DISCONNECTED' && 'https://gdgu.digiicampus.com/'}
+            {portalState.authStatus === 'DISCONNECTED' && 'https://gdgu.digiicampus.com/feed'}
             {portalState.authStatus !== 'DISCONNECTED' && portalState.userRole === 'student' && (
               studentTab === 'results' ? 'https://gdgu.digiicampus.com/V2/#/examinationManagement/studentExamRecords/674656' :
               studentTab === 'attendance' ? 'https://gdgu.digiicampus.com/profile/674656/attendance' :
@@ -144,7 +186,7 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
           </span>
         </div>
         <button
-          className="btn"
+          className="persona-chip-btn"
           style={{ padding: '4px 8px', fontSize: '0.72rem' }}
           onClick={() => {
             PortalConnector.setAuthStatus('CONNECTED_AUTHENTICATED');
@@ -152,348 +194,399 @@ export const DigiCampusSandbox: React.FC<DigiCampusSandboxProps> = ({
           }}
           title="Reload Portal Tab"
         >
-          <RefreshCw size={12} />
+          <RefreshCw size={12} strokeWidth={2.4} />
         </button>
       </div>
 
       <div className="portal-content">
-        {/* Live Portal Launcher Banner */}
+        {/* Test Bench Failure & Edge Case Simulator Controls */}
         <div style={{
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '10px 14px',
-          background: 'linear-gradient(135deg, rgba(244, 114, 182, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%)',
+          flexDirection: 'column',
+          gap: '8px',
+          padding: '12px 14px',
+          background: '#FFFFFF',
+          border: '2px solid #000000',
           borderRadius: '8px',
-          border: '1px solid rgba(244, 114, 182, 0.25)'
+          boxShadow: '2.5px 2.5px 0px #000000'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <GraduationCap size={18} color="#f472b6" />
-            <div>
-              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f8fafc' }}>
-                GD Goenka University DigiCampus (Live Host)
-              </span>
-              <span style={{ fontSize: '0.72rem', color: '#9da4b8', display: 'block' }}>
-                Official Endpoint: <code>gdgu.digiicampus.com</code>
-              </span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.74rem', fontWeight: 900, color: '#000000' }}>
+              <ShieldAlert size={14} color="#D97706" strokeWidth={2.4} />
+              <span>Session & Failure Testing Bar</span>
             </div>
+            <span style={{ fontSize: '0.68rem', fontWeight: 800, padding: '1px 6px', background: 'var(--neo-yellow)', border: '1px solid #000', borderRadius: '4px' }}>
+              Sandbox Controls
+            </span>
           </div>
-          <a
-            href="https://gdgu.digiicampus.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-primary"
-            style={{ fontSize: '0.74rem', padding: '6px 12px', background: 'linear-gradient(135deg, #e11d48, #f472b6)' }}
-          >
-            <span>Launch Live Tab ↗</span>
-          </a>
-        </div>
-
-        {/* Test Bench Edge-Case Simulator Controls */}
-        <div className="test-controls-card">
-          <div className="test-controls-title">
-            <ShieldAlert size={14} color="#f59e0b" />
-            <span>GDGU Portal Session & Failure Simulator</span>
-          </div>
-          <div className="controls-button-grid">
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
             <button
-              className={`control-btn ${portalState.authStatus === 'CONNECTED_AUTHENTICATED' ? 'active' : ''}`}
+              className={`persona-chip-btn ${portalState.authStatus === 'CONNECTED_AUTHENTICATED' ? 'active' : ''}`}
+              style={{ background: portalState.authStatus === 'CONNECTED_AUTHENTICATED' ? 'var(--neo-mint)' : '#FFFFFF' }}
               onClick={() => handleSetAuth('CONNECTED_AUTHENTICATED')}
             >
-              🟢 Authenticated
+              🟢 Connected
             </button>
             <button
-              className={`control-btn ${portalState.authStatus === 'SESSION_EXPIRED' ? 'active' : ''}`}
+              className="persona-chip-btn"
               onClick={() => handleSetAuth('SESSION_EXPIRED')}
             >
               🟡 Expire Session
             </button>
             <button
-              className={`control-btn ${portalState.authStatus === 'MFA_CHALLENGE' ? 'active' : ''}`}
+              className="persona-chip-btn"
               onClick={() => handleSetAuth('MFA_CHALLENGE')}
             >
               🔒 Trigger MFA
             </button>
             <button
-              className={`control-btn ${portalState.authStatus === 'DISCONNECTED' ? 'active' : ''}`}
+              className="persona-chip-btn"
               onClick={handleSignOut}
             >
-              ⚪ Sign Out / Disconnect
+              ⚪ Disconnect
             </button>
             <button
-              className={`control-btn ${portalState.layoutVersion === 'results-v2-unknown' ? 'active' : ''}`}
+              className="persona-chip-btn"
               onClick={() => handleSetLayout(portalState.layoutVersion === 'results-v2-unknown' ? 'results-v1' : 'results-v2-unknown')}
             >
-              ⚠️ Layout Redesign (Fail-Closed)
+              ⚠️ Test Fail-Closed
             </button>
           </div>
         </div>
 
-        {/* GD GOENKA UNIVERSITY OFFICIAL SSO LOGIN VIEW */}
+        {/* ======================================================================
+            DISCONNECTED STATE: PLAID-STYLE ZERO-TRUST GATEWAY
+           ====================================================================== */}
         {portalState.authStatus === 'DISCONNECTED' && (
-          <div style={{
-            margin: '0 auto',
-            width: '100%',
-            maxWidth: '500px',
-            background: 'rgba(15, 23, 42, 0.85)',
-            borderRadius: '14px',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            padding: '24px',
-            boxShadow: '0 15px 35px rgba(0,0,0,0.5)'
-          }}>
-            <div style={{ textAlign: 'center', marginBottom: '18px' }}>
-              <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#94a3b8' }}>
-                welcome to
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            {/* 1. Plaid-Style "Detected Active Tab" Hero Card */}
+            <div className="portal-companion-banner">
+              <div className="companion-banner-header">
+                <div className="companion-tab-info">
+                  <div className="companion-pulse-dot" />
+                  <div>
+                    <div style={{ fontSize: '0.84rem', fontWeight: 900, color: '#000000', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <Globe size={15} strokeWidth={2.4} />
+                      <span>Active Browser Session Detected</span>
+                    </div>
+                    <div style={{ fontSize: '0.74rem', fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#4B5563' }}>
+                      gdgu.digiicampus.com/feed
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="companion-sync-btn"
+                  onClick={handleSyncActiveTab}
+                  disabled={isAuthenticating}
+                >
+                  {isAuthenticating ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      <span>Syncing...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Zap size={16} strokeWidth={2.6} />
+                      <span>Sync Active Tab (1-Click)</span>
+                    </>
+                  )}
+                </button>
               </div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', margin: '4px 0' }}>
-                <span style={{ color: '#ea5652' }}>GD GOENKA</span> UNIVERSITY
-              </h3>
-              <div style={{ display: 'inline-block', fontSize: '0.68rem', fontWeight: 700, padding: '2px 8px', borderRadius: '4px', background: 'rgba(234, 86, 82, 0.15)', color: '#f87171', border: '1px solid rgba(234, 86, 82, 0.3)' }}>
-                NAAC GRADE A+ ACCREDITED
+
+              {/* Cross-Section Background Resilience Explainer */}
+              <div className="cross-section-callout">
+                <Sparkles size={16} color="#000000" strokeWidth={2.4} style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Cross-Section Background Sync:</strong> Even if your active tab is sitting on <code>/feed</code> or <code>/calendar</code>, UniAssist AI extracts your exam results and attendance in the background via session token without disrupting your current screen!
+                </div>
               </div>
             </div>
 
-            {/* Role Switcher */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '6px',
-              background: 'rgba(0, 0, 0, 0.35)',
-              padding: '4px',
-              borderRadius: '8px',
-              marginBottom: '16px'
-            }}>
-              <button
-                type="button"
-                className={`btn ${loginRole === 'student' ? 'btn-primary' : ''}`}
-                style={{ fontSize: '0.76rem', padding: '6px 4px', justifyContent: 'center' }}
-                onClick={() => handleRoleTabChange('student')}
-              >
-                🎓 Student
-              </button>
-              <button
-                type="button"
-                className={`btn ${loginRole === 'faculty' ? 'btn-primary' : ''}`}
-                style={{ fontSize: '0.76rem', padding: '6px 4px', justifyContent: 'center' }}
-                onClick={() => handleRoleTabChange('faculty')}
-              >
-                👨‍🏫 Faculty
-              </button>
-              <button
-                type="button"
-                className={`btn ${loginRole === 'dean' ? 'btn-primary' : ''}`}
-                style={{ fontSize: '0.76rem', padding: '6px 4px', justifyContent: 'center' }}
-                onClick={() => handleRoleTabChange('dean')}
-              >
-                🏛️ Dean
-              </button>
-            </div>
-
-            <form onSubmit={handleFormLogin} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div>
-                <label style={{ fontSize: '0.76rem', color: '#cbd5e1', display: 'block', marginBottom: '5px' }}>
-                  Registration id / email / phone no. *
-                </label>
-                <input
-                  type="text"
-                  className="chat-input"
-                  style={{
-                    width: '100%',
-                    padding: '9px 12px',
-                    background: 'var(--bg-input)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: '8px',
-                    color: '#ffffff',
-                    fontSize: '0.85rem'
-                  }}
-                  placeholder="e.g. 230101010042 or yourname@gdgu.org"
-                  value={loginUsername}
-                  onChange={e => setLoginUsername(e.target.value)}
-                  required
-                />
+            {/* 2. Unified GDGU Multi-Identifier Login Card */}
+            <div className="enterprise-gateway-card">
+              <div className="gateway-header">
+                <span className="gateway-crest-pill">
+                  NAAC GRADE A+ ACCREDITED · GD GOENKA UNIVERSITY
+                </span>
+                <h3 className="gateway-title">
+                  DigiCampus Enterprise Gateway
+                </h3>
+                <p style={{ fontSize: '0.78rem', color: '#4B5563', fontWeight: 600, maxWidth: '440px', lineHeight: 1.45 }}>
+                  Sign in with any GDGU credential format. UniAssist AI operates with Zero Credential Retention.
+                </p>
               </div>
 
-              <div>
-                <label style={{ fontSize: '0.76rem', color: '#cbd5e1', display: 'block', marginBottom: '5px' }}>
-                  Student / User Display Name
-                </label>
-                <input
-                  type="text"
-                  className="chat-input"
-                  style={{
-                    width: '100%',
-                    padding: '9px 12px',
-                    background: 'var(--bg-input)',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: '8px',
-                    color: '#ffffff',
-                    fontSize: '0.85rem'
+              {/* Identifier Format Switcher */}
+              <div className="identifier-method-tabs">
+                <button
+                  type="button"
+                  className={`identifier-tab-btn ${authMethod === 'ROLL_NO' ? 'active' : ''}`}
+                  onClick={() => {
+                    setAuthMethod('ROLL_NO');
+                    setIdentifierInput('230160223096');
                   }}
-                  placeholder="e.g. Sarthak Singh"
-                  value={loginFullName}
-                  onChange={e => setLoginFullName(e.target.value)}
-                />
+                >
+                  <Hash size={13} strokeWidth={2.4} />
+                  <span>Roll / Reg No</span>
+                </button>
+                <button
+                  type="button"
+                  className={`identifier-tab-btn ${authMethod === 'MOBILE' ? 'active' : ''}`}
+                  onClick={() => {
+                    setAuthMethod('MOBILE');
+                    setIdentifierInput('+91 98102 34567');
+                  }}
+                >
+                  <Smartphone size={13} strokeWidth={2.4} />
+                  <span>Mobile OTP</span>
+                </button>
+                <button
+                  type="button"
+                  className={`identifier-tab-btn ${authMethod === 'EMAIL' ? 'active' : ''}`}
+                  onClick={() => {
+                    setAuthMethod('EMAIL');
+                    setIdentifierInput('sarthak.singh@gmail.com');
+                  }}
+                >
+                  <Mail size={13} strokeWidth={2.4} />
+                  <span>Personal Email</span>
+                </button>
+                <button
+                  type="button"
+                  className={`identifier-tab-btn ${authMethod === 'OFFICIAL_SSO' ? 'active' : ''}`}
+                  onClick={() => {
+                    setAuthMethod('OFFICIAL_SSO');
+                    setIdentifierInput('sarthak.230160223096@gdgu.org');
+                  }}
+                >
+                  <ShieldCheck size={13} strokeWidth={2.4} />
+                  <span>@gdgu.org SSO</span>
+                </button>
               </div>
 
-              <div>
-                <label style={{ fontSize: '0.76rem', color: '#cbd5e1', display: 'block', marginBottom: '5px' }}>
-                  Password *
-                </label>
-                <div style={{ position: 'relative' }}>
+              {/* Gateway Form */}
+              <form onSubmit={handleIdentifierSubmit} className="gateway-form">
+                <div className="gateway-input-group">
+                  <label className="gateway-label">
+                    {authMethod === 'ROLL_NO' && 'University Registration / Roll Number *'}
+                    {authMethod === 'MOBILE' && 'Registered Mobile Number *'}
+                    {authMethod === 'EMAIL' && 'Personal / Registered Email Address *'}
+                    {authMethod === 'OFFICIAL_SSO' && 'GDGU Institutional Email (@gdgu.org) *'}
+                  </label>
                   <input
-                    type={showPassword ? 'text' : 'password'}
-                    className="chat-input"
-                    style={{
-                      width: '100%',
-                      padding: '9px 38px 9px 12px',
-                      background: 'var(--bg-input)',
-                      border: '1px solid var(--border-subtle)',
-                      borderRadius: '8px',
-                      color: '#ffffff',
-                      fontSize: '0.85rem'
-                    }}
-                    placeholder="Enter password"
-                    value={loginPassword}
-                    onChange={e => setLoginPassword(e.target.value)}
+                    type="text"
+                    className="gateway-input"
+                    value={identifierInput}
+                    onChange={e => setIdentifierInput(e.target.value)}
+                    placeholder={
+                      authMethod === 'ROLL_NO' ? 'e.g. 230160223096' :
+                      authMethod === 'MOBILE' ? 'e.g. +91 9876543210' :
+                      authMethod === 'EMAIL' ? 'e.g. yourname@gmail.com' :
+                      'e.g. rollnumber@gdgu.org'
+                    }
                     required
                   />
+                </div>
+
+                <div className="gateway-input-group">
+                  <label className="gateway-label">
+                    {authMethod === 'MOBILE' ? 'SMS One-Time Password (OTP) *' : 'DigiCampus Password *'}
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      className="gateway-input"
+                      style={{ paddingRight: '40px' }}
+                      value={loginPassword}
+                      onChange={e => setLoginPassword(e.target.value)}
+                      placeholder={authMethod === 'MOBILE' ? 'Enter 6-digit OTP' : 'Enter password'}
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={{
+                        position: 'absolute',
+                        right: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        background: 'none',
+                        border: 'none',
+                        color: '#000000',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {showPassword ? <EyeOff size={16} strokeWidth={2.4} /> : <Eye size={16} strokeWidth={2.4} />}
+                    </button>
+                  </div>
+                </div>
+
+                {loginMessage && (
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 12px',
+                    background: 'var(--neo-mint-light)',
+                    border: '1.5px solid #000',
+                    borderRadius: '6px',
+                    fontSize: '0.78rem',
+                    fontWeight: 800,
+                    color: '#000'
+                  }}>
+                    <Loader2 size={15} className="animate-spin" />
+                    <span>{loginMessage}</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="gateway-submit-btn"
+                  disabled={isAuthenticating}
+                >
+                  <LogIn size={16} strokeWidth={2.6} />
+                  <span>
+                    Sign In to DigiCampus ({loginRole.toUpperCase()})
+                  </span>
+                </button>
+              </form>
+
+              {/* Quick Persona Fill */}
+              <div className="persona-presets-box">
+                <span className="persona-presets-title">Quick Test Personas (1-Click Fill)</span>
+                <div className="persona-buttons-row">
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    style={{
-                      position: 'absolute',
-                      right: '10px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      background: 'none',
-                      border: 'none',
-                      color: '#94a3b8',
-                      cursor: 'pointer'
-                    }}
+                    className="persona-chip-btn"
+                    onClick={() => handleQuickPersonaSelect('student')}
                   >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    🎓 Sarthak (Student)
+                  </button>
+                  <button
+                    type="button"
+                    className="persona-chip-btn"
+                    onClick={() => handleQuickPersonaSelect('faculty')}
+                  >
+                    👨‍🏫 Prof. Rai (Faculty)
+                  </button>
+                  <button
+                    type="button"
+                    className="persona-chip-btn"
+                    onClick={() => handleQuickPersonaSelect('dean')}
+                  >
+                    🏛️ Prof. Sen (Dean)
                   </button>
                 </div>
               </div>
 
-              {loginMessage && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#60a5fa', fontSize: '0.8rem', background: 'rgba(59, 130, 246, 0.1)', padding: '8px', borderRadius: '6px' }}>
-                  <Loader2 size={15} className="animate-spin" />
-                  <span>{loginMessage}</span>
+              {/* Telemetry & Compliance Strip */}
+              <div className="telemetry-trust-strip">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <ShieldCheck size={16} color="#16A34A" strokeWidth={2.5} />
+                  <span>Zero-Credential Protocol</span>
                 </div>
-              )}
-
-              <button
-                type="submit"
-                className="btn btn-primary"
-                style={{ width: '100%', justifyContent: 'center', padding: '10px', fontSize: '0.9rem', marginTop: '4px' }}
-                disabled={isAuthenticating}
-              >
-                {isAuthenticating ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" />
-                    <span>Authenticating GDGU Session...</span>
-                  </>
-                ) : (
-                  <>
-                    <LogIn size={16} />
-                    <span>Sign In to GDGU DigiCampus ({loginRole.toUpperCase()})</span>
-                  </>
-                )}
-              </button>
-            </form>
-
-            <div style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '8px',
-              marginTop: '16px',
-              padding: '10px',
-              borderRadius: '6px',
-              background: 'rgba(16, 185, 129, 0.06)',
-              border: '1px solid rgba(16, 185, 129, 0.2)',
-              fontSize: '0.72rem',
-              color: '#6ee7b7'
-            }}>
-              <ShieldCheck size={16} style={{ flexShrink: 0, marginTop: '2px' }} />
-              <div>
-                <strong>GDGU Security Protocol:</strong> Direct SSO tab sign-in. In compliance with Phase 1 PRD FR-03, UniAssist AI never asks for, records, or stores your DigiCampus password.
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Wifi size={14} color="#000" strokeWidth={2.4} />
+                  <span>Ping: 24ms (TLS 1.3)</span>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* SESSION EXPIRED STATE */}
+        {/* ======================================================================
+            SESSION EXPIRED STATE (NEUBRUTALIST RECOVERY)
+           ====================================================================== */}
         {portalState.authStatus === 'SESSION_EXPIRED' && (
           <div style={{
-            margin: 'auto',
+            margin: '20px auto',
             textAlign: 'center',
-            padding: '30px',
-            background: 'rgba(245, 158, 11, 0.06)',
+            padding: '28px 24px',
+            background: 'var(--neo-yellow-light)',
             borderRadius: '12px',
-            border: '1px solid rgba(245, 158, 11, 0.3)',
-            maxWidth: '400px'
+            border: '2.5px solid #000000',
+            boxShadow: '5px 5px 0px #000000',
+            maxWidth: '440px'
           }}>
-            <AlertTriangle size={42} color="#f59e0b" style={{ margin: '0 auto 12px auto' }} />
-            <h3 style={{ fontSize: '1.1rem', color: '#fbbf24', marginBottom: '8px' }}>GDGU Session Timed Out</h3>
-            <p style={{ fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '16px' }}>
-              Your GD Goenka University portal session has expired. Re-authenticate directly on this tab to resume.
+            <AlertTriangle size={44} color="#D97706" strokeWidth={2.4} style={{ margin: '0 auto 12px auto' }} />
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 900, color: '#000000', marginBottom: '8px' }}>
+              DigiCampus Session Timed Out
+            </h3>
+            <p style={{ fontSize: '0.84rem', fontWeight: 600, color: '#374151', marginBottom: '18px', lineHeight: 1.5 }}>
+              Your GD Goenka University session token has expired. Re-authenticate in 1 click to resume AI assistance without losing conversation context.
             </p>
             <button
-              className="btn btn-primary"
+              className="companion-sync-btn"
+              style={{ width: '100%', padding: '10px' }}
               onClick={() => handleSetAuth('CONNECTED_AUTHENTICATED')}
             >
-              Re-authenticate Session
+              <Zap size={16} strokeWidth={2.6} />
+              <span>Renew Session (1-Click)</span>
             </button>
           </div>
         )}
 
-        {/* MFA CHALLENGE STATE */}
+        {/* ======================================================================
+            MFA CHALLENGE STATE (NEUBRUTALIST OTP MODAL)
+           ====================================================================== */}
         {portalState.authStatus === 'MFA_CHALLENGE' && (
           <div style={{
-            margin: 'auto',
+            margin: '20px auto',
             textAlign: 'center',
-            padding: '30px',
-            background: 'rgba(99, 102, 241, 0.08)',
+            padding: '28px 24px',
+            background: '#FFFFFF',
             borderRadius: '12px',
-            border: '1px solid rgba(99, 102, 241, 0.3)',
-            maxWidth: '400px'
+            border: '2.5px solid #000000',
+            boxShadow: '5px 5px 0px #000000',
+            maxWidth: '440px'
           }}>
-            <KeyRound size={42} color="#818cf8" style={{ margin: '0 auto 12px auto' }} />
-            <h3 style={{ fontSize: '1.1rem', color: '#a5b4fc', marginBottom: '8px' }}>GDGU Two-Factor Authentication</h3>
-            <p style={{ fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '16px' }}>
-              Enter the OTP sent to your registered mobile / email directly on this portal screen.
+            <KeyRound size={44} color="#000000" strokeWidth={2.4} style={{ margin: '0 auto 12px auto' }} />
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 900, color: '#000000', marginBottom: '8px' }}>
+              Two-Factor Authentication Required
+            </h3>
+            <p style={{ fontSize: '0.84rem', fontWeight: 600, color: '#374151', marginBottom: '18px', lineHeight: 1.5 }}>
+              GDGU security has issued an MFA challenge. Complete OTP verification to restore automated reading.
             </p>
             <button
-              className="btn btn-primary"
+              className="companion-sync-btn"
+              style={{ width: '100%', padding: '10px' }}
               onClick={() => handleSetAuth('CONNECTED_AUTHENTICATED')}
             >
-              Complete Verification Directly
+              <CheckCircle2 size={16} strokeWidth={2.6} />
+              <span>Complete Verification</span>
             </button>
           </div>
         )}
 
-        {/* UNKNOWN LAYOUT FAIL-CLOSED STATE */}
+        {/* ======================================================================
+            UNKNOWN LAYOUT FAIL-CLOSED STATE
+           ====================================================================== */}
         {portalState.authStatus === 'UNKNOWN_LAYOUT' && (
           <div style={{
-            margin: 'auto',
+            margin: '20px auto',
             textAlign: 'center',
-            padding: '30px',
-            background: 'rgba(239, 68, 68, 0.08)',
+            padding: '28px 24px',
+            background: 'var(--neo-coral-light)',
             borderRadius: '12px',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            maxWidth: '420px'
+            border: '2.5px solid #000000',
+            boxShadow: '5px 5px 0px #000000',
+            maxWidth: '440px'
           }}>
-            <LayoutTemplate size={42} color="#f87171" style={{ margin: '0 auto 12px auto' }} />
-            <h3 style={{ fontSize: '1.1rem', color: '#fca5a5', marginBottom: '8px' }}>Unrecognized Portal Layout</h3>
-            <p style={{ fontSize: '0.82rem', color: '#cbd5e1', marginBottom: '16px' }}>
-              The GDGU DigiCampus layout was updated. Failing closed to prevent corrupted or hallucinated records.
+            <LayoutTemplate size={44} color="#DC2626" strokeWidth={2.4} style={{ margin: '0 auto 12px auto' }} />
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 900, color: '#000000', marginBottom: '8px' }}>
+              Unrecognized DigiCampus Layout
+            </h3>
+            <p style={{ fontSize: '0.84rem', fontWeight: 600, color: '#374151', marginBottom: '18px', lineHeight: 1.5 }}>
+              GDGU updated the portal DOM schema. Failing closed in compliance with FR-09 to prevent incorrect record extraction.
             </p>
             <button
-              className="btn"
+              className="persona-chip-btn"
+              style={{ padding: '8px 16px', background: '#FFFFFF' }}
               onClick={() => handleSetLayout('results-v1')}
             >
-              Restore Standard Layout (results-v1)
+              Restore Standard Schema (results-v1)
             </button>
           </div>
         )}
